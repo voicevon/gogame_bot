@@ -1,7 +1,7 @@
 
 import sys
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/perfect')
-from perfect.color_print import const
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from app_global.color_print import CONST
 
     # '(\ (\'
 
@@ -25,8 +25,8 @@ welcome.append('  *                                                     *  ')
 welcome.append('  * * * * * * * * * * * * * * * * * * * * * * * * * * * *  ')
 welcome.append('                                                           ')
 for w in welcome:
-    print('                      ' +const.print_color.control.bold + const.print_color.fore.yellow + const.print_color.background.blue + w + const.print_color.control.reset)
-print(const.print_color.control.reset)
+    print('                      ' + CONST.print_color.control.bold + CONST.print_color.fore.yellow + CONST.print_color.background.blue + w + CONST.print_color.control.reset)
+print(CONST.print_color.control.reset)
 
 if True:
     from mainSMF import GoManager

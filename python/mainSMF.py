@@ -11,21 +11,16 @@
 # sudo chmod 666 /dev/ttyUSB0
 
 import sys
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/robot_eye')
-from single_eye import SingleEye
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from robot_eye.single_eye import SingleEye
 
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/go_gameboard')
-from chessboard import ChessboardLayout,DiedAreaScanner
-from chessboard_cell import ChessboardCell
+from go_game_board.chessboard import ChessboardLayout,DiedAreaScanner
+from go_game_board.chessboard_cell import ChessboardCell
 
+from robot_arm.human_level_robot import HumanLevel_RobotArm
 
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/robot_arm')
-from human_level_robot import HumanLevel_RobotArm
-
-
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/app_global')
-from color_print import CONST
-from go_game_config import app_config
+from app_global.color_print import CONST
+from app_global.go_game_config import app_config
 
 from go_game_ai_client import GoGameAiClient
 import paho.mqtt.client as mqtt

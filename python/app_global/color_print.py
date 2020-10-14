@@ -53,5 +53,6 @@ class cv_color:
     line = (0,255,0)  
     circle = (255,255,0)
 
+
 if __name__ == "__main__":
     print (CONST.print_color.fore.yellow + 'Hello world.   ' + CONST.print_color.fore.red + 'Hey!')
