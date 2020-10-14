@@ -14,7 +14,7 @@ import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from robot_eye.single_eye import SingleEye
 
-from go_game_board.chessboard import ChessboardLayout,DiedAreaScanner
+from go_game_board.chessboard import ChessboardLayout, DiedAreaScanner
 from go_game_board.chessboard_cell import ChessboardCell
 
 from robot_arm.human_level_robot import HumanLevel_RobotArm

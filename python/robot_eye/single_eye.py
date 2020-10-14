@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import threading
 import click
-import rospy  # only for sleep
+import time  # only for sleep
 
 
 import sys
@@ -93,6 +93,90 @@ class SingleEye():
         layout.rename_to('stable detect layout (depth = %d)' % stable_depth)
         return layout
 
+    def Toushi(self, img, x, y, w, h, contour):
+        # cv2.imshow("imgss", img)
+        height, width = img.shape[:2]
+        dp1 = dp2 = dp3 = dp4 = 10000
+        for i in range(len(contour)):
+            ddp1 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-y)
+            if ddp1<dp1:
+                dp1 = ddp1
+                pp1 = contour[i][0]
+            ddp2 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-y)
+            if ddp2<dp2:
+                dp2 = ddp2
+                pp2 = contour[i][0]
+            ddp3 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-(y+h))
+            if ddp3<dp3:
+                dp3 = ddp3
+                pp3 = contour[i][0]
+            ddp4 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-(y+h))
+            if ddp4<dp4:
+                dp4 = ddp4
+                pp4 = contour[i][0]
+        pts1 = numpy.float32([pp1, pp2, pp3, pp4])
+        pts2 = numpy.float32([[x, y],[x+430,y],[x+430,y+430],[x, y+430]])
+        # print("pts1:{0}".format(pts1))
+        # print("pts2:{0}".format(pts2))
+        M = cv2.getPerspectiveTransform(pts1,pts2)
+        dst = cv2.warpPerspective(img, M, (width, height))
+        # cv2.imshow("dst", dst)
+        return dst
+
+    def compo(self,img):
+        # https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
+        # 因为是取的黄色棋盘，所以棋盘外面暂时没有偏移；下一步需要根据实际情况，对棋盘的进行偏移处理
+        # 另外，这里没有考虑棋盘旋转的情况，默认的棋盘应该是正好卡在一个正方形里面的。这里考虑到变形，会有些许的调整。
+        dst = self.Toushi(img,x,y,w,h,qipan)
+        xNew = x + 0
+        yNew = y + 0
+        xEnd = x + self.__CROP_WIDTH
+        yEnd = y + self.__CROP_HEIGHT
+        # cv2.rectangle(Img,(xNew,yNew),(xEnd,yEnd),(0,255,),1)
+
+
+        # 获取到了棋盘
+        singleQiPan = dst[yNew:yEnd, xNew:xEnd]
+        CvDebugger.show_debug_image('board_scaner', singleQiPan, 'Got it')
+        return singleQiPan
+
+    def new_idea(self,img):
+        # detect edges using Canny
+        img_target = img.copy()
+        canny = cv2.Canny(img, 50,150)
+        cv2.imshow('canny', canny)
+        # retrieve contours by findCountours
+        contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        img_contour = cv2.drawContours(img, contours, -1, (0,255,75), 2)
+        cv2.imshow('contours',img_contour)
+
+        target_contour = None
+        print('````````````````````````````````````````````')
+        for con in contours:
+            rec = cv2.boundingRect(con)
+            area = cv2.contourArea(con)
+            if area > 10000:
+                print(rec, area)
+                # target_contour.append(con)
+                target_contour = con
+                target_rec = rec
+        # cv2.imshow('im2',im2)
+        # approxPolyDP to decrease number of vericales
+
+        # img_target = cv2.drawContours(img, target_contour, -1, (0,255,0), 2)
+        print(target_rec)
+        # (rec,area) = target_contour
+        x1,y1,x2,y2 = target_rec
+        iii = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
+        cv2.imshow('target',iii)
+        cv2.waitKey(1)
+
+
+    def get_chessboard_test(self):
+        ret, img = self.__capture_newest_image()
+        if ret:
+            self.new_idea(img)
+
     def get_stable_mark(self,min_stable_depth):
         stable_depth = 0
         while stable_depth < min_stable_depth:
@@ -157,7 +241,7 @@ if __name__ == '__main__':
         #     print(m)
 
         # key = click.getchar()
-        key = '4'
+        key = '8'
         if key == '1':
             pass
 
@@ -188,3 +272,7 @@ if __name__ == '__main__':
             print('444444444444')
             scanner.print_out_died_area()
             rospy.sleep(333)
+        
+        elif key == '8':
+            myrobotEye.get_chessboard_test()
+            # time.sleep(0.1)
