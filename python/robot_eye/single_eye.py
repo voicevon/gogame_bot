@@ -145,11 +145,11 @@ class SingleEye():
         # detect edges using Canny
         img_target = img.copy()
         img_approx = img.copy()
-        canny = cv2.Canny(img, 50,150)
+        canny = cv2.Canny(img, 149,150)
         cv2.imshow('canny', canny)
         # retrieve contours by findCountours
         contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        img_contour = cv2.drawContours(img, contours, -1, (0,255,75), 2)
+        img_contour = cv2.drawContours(img, contours, -1, (0,255,75), 1)
         cv2.imshow('contours',img_contour)
 
         target_contour = None
@@ -181,10 +181,10 @@ class SingleEye():
         print('----------------------------------------------------------')
         cv2.imshow('approx', approx_image)
 
-        tr = approx[1]
-        print(tr)
-        x,y = tr[0]   
-        print(x,y)
+        # tr = approx[1]
+        # print(tr)
+        # x,y = tr[0]   
+        # print(x,y)
         
         # source = cv2.line(img, approx)
         if len(approx) == 4:
