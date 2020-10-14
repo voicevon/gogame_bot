@@ -114,8 +114,8 @@ class SingleEye():
             if ddp4<dp4:
                 dp4 = ddp4
                 pp4 = contour[i][0]
-        pts1 = numpy.float32([pp1, pp2, pp3, pp4])
-        pts2 = numpy.float32([[x, y],[x+430,y],[x+430,y+430],[x, y+430]])
+        pts1 = np.float32([pp1, pp2, pp3, pp4])
+        pts2 = np.float32([[x, y],[x+430,y],[x+430,y+430],[x, y+430]])
         # print("pts1:{0}".format(pts1))
         # print("pts2:{0}".format(pts2))
         M = cv2.getPerspectiveTransform(pts1,pts2)
@@ -124,9 +124,7 @@ class SingleEye():
         return dst
 
     def compo(self,img):
-        # https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
-        # 因为是取的黄色棋盘，所以棋盘外面暂时没有偏移；下一步需要根据实际情况，对棋盘的进行偏移处理
-        # 另外，这里没有考虑棋盘旋转的情况，默认的棋盘应该是正好卡在一个正方形里面的。这里考虑到变形，会有些许的调整。
+
         dst = self.Toushi(img,x,y,w,h,qipan)
         xNew = x + 0
         yNew = y + 0
@@ -135,14 +133,18 @@ class SingleEye():
         # cv2.rectangle(Img,(xNew,yNew),(xEnd,yEnd),(0,255,),1)
 
 
-        # 获取到了棋盘
         singleQiPan = dst[yNew:yEnd, xNew:xEnd]
         CvDebugger.show_debug_image('board_scaner', singleQiPan, 'Got it')
         return singleQiPan
 
     def new_idea(self,img):
+        # https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
+        # https://www.geeksforgeeks.org/perspective-transformation-python-opencv/
+
+
         # detect edges using Canny
         img_target = img.copy()
+        img_approx = img.copy()
         canny = cv2.Canny(img, 50,150)
         cv2.imshow('canny', canny)
         # retrieve contours by findCountours
@@ -151,24 +153,56 @@ class SingleEye():
         cv2.imshow('contours',img_contour)
 
         target_contour = None
-        print('````````````````````````````````````````````')
+        approx = None
+        # print('````````````````````````````````````````````')
         for con in contours:
             rec = cv2.boundingRect(con)
             area = cv2.contourArea(con)
-            if area > 10000:
-                print(rec, area)
+            if area > 17000:
+                # print(rec, area)
                 # target_contour.append(con)
                 target_contour = con
                 target_rec = rec
-        # cv2.imshow('im2',im2)
-        # approxPolyDP to decrease number of vericales
+                # cv2.imshow('im2',im2)
+                # approxPolyDP to decrease number of vericales
+                epsilon = 0.1 * cv2.arcLength(con, True)
+                approx = cv2.approxPolyDP(con, epsilon, True)
+
 
         # img_target = cv2.drawContours(img, target_contour, -1, (0,255,0), 2)
-        print(target_rec)
+        # print(target_rec)
         # (rec,area) = target_contour
         x1,y1,x2,y2 = target_rec
-        iii = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
-        cv2.imshow('target',iii)
+        bounding_rectangle = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
+        cv2.imshow('target',bounding_rectangle)
+
+        approx_image = cv2.drawContours(img_approx, approx, -1, (255,0,0),22)
+        print('>>>>>>>>>>>>>>>>>>>>>>', approx)
+        print('----------------------------------------------------------')
+        cv2.imshow('approx', approx_image)
+
+        tr = approx[1]
+        print(tr)
+        x,y = tr[0]   
+        print(x,y)
+        
+        # source = cv2.line(img, approx)
+        if len(approx) == 4:
+            x_tr, y_tr = approx[0][0]
+            x_tl, y_tl = approx[1][0]
+            x_bl, y_bl = approx[2][0]
+            x_br, y_br = approx[3][0]
+            # Locate points of the documents or object which you want to transform 
+            width = 500
+            height = 500
+            pts1 = np.float32([[x_tl, y_tl], [x_bl, y_bl], [x_br, y_br], [x_tr, y_tr]]) 
+            target_point = np.float32([[0, 0], [0, height], [width, height], [width, 0]])
+            
+            # Apply Perspective Transform Algorithm 
+            matrix = cv2.getPerspectiveTransform(pts1, target_point) 
+            result = cv2.warpPerspective(approx_image, matrix, (500, 600)) 
+            # print(x_tr, y_tr)
+            cv2.imshow('finnal',result)
         cv2.waitKey(1)
 
 
@@ -275,4 +309,5 @@ if __name__ == '__main__':
         
         elif key == '8':
             myrobotEye.get_chessboard_test()
+            # layout = myrobotEye.get_stable_layout(app_config.robot_eye.layout_scanner.stable_depth)
             # time.sleep(0.1)
