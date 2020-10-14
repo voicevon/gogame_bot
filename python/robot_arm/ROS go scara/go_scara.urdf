@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="go_scara">
+  <link  name="base">
+    <inertial>
+      <origin
+        xyz="-1.36154252850511E-05 -0.0234650999397215 -0.0449167509871729"
+        rpy="0 0 0" />
+      <mass
+        value="1.4804658713768" />
+      <inertia
+        ixx="0.0169601669548513"
+        ixy="-9.14107625984327E-08"
+        ixz="-1.59451088014144E-06"
+        iyy="0.0267437123409102"
+        iyz="-0.000301644115895639"
+        izz="0.0100999896912472" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/base.STL" />
+      </geometry>
+    </collision>  </link><link  name="ll1">
+    <inertial>
+      <origin
+        xyz="3.296E-17 0.0056699 -0.11123"
+        rpy="0 0 0" />
+      <mass
+        value="0.080294" />
+      <inertia
+        ixx="0.00047058"
+        ixy="2.1176E-22"
+        ixz="1.0249E-19"
+        iyy="0.00047574"
+        iyz="2.9485E-06"
+        izz="6.8342E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll1.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj1"  type="revolute">
+    <origin
+      xyz="-0.03 0 0"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="base" />
+    <child
+      link="ll1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-2.3562"
+      upper="1.5708"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="ll2">
+    <inertial>
+      <origin
+        xyz="1.6653E-16 0.0097573 -0.13801"
+        rpy="0 0 0" />
+      <mass
+        value="0.082042" />
+      <inertia
+        ixx="0.00067471"
+        ixy="-1.9058E-21"
+        ixz="8.6122E-19"
+        iyy="0.0006785"
+        iyz="2.7477E-06"
+        izz="5.4196E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll2.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj2"  type="revolute">
+    <origin
+      xyz="0 0.007 -0.25"
+      rpy="3.1416 -1.5708 3.1416" />
+    <parent
+      link="ll1" />
+    <child
+      link="ll2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1"
+      upper="2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="ll3">
+    <inertial>
+      <origin
+        xyz="-4.5788E-10 5.5511E-17 -0.018353"
+        rpy="0 0 0" />
+      <mass
+        value="0.0087838" />
+      <inertia
+        ixx="3.0213E-06"
+        ixy="3.7303E-14"
+        ixz="-9.9602E-14"
+        iyy="3.1549E-06"
+        iyz="-5.613E-22"
+        izz="4.1577E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll3.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj3"  type="prismatic">
+    <origin
+      xyz="0 0 -0.297"
+      rpy="1.5708 0.66309 0" />
+    <parent
+      link="ll2" />
+    <child
+      link="ll3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-10.01"
+      upper="10.01"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="ll4">
+    <inertial>
+      <origin
+        xyz="3.2149E-12 9.9622E-12 0.074425"
+        rpy="0 0 0" />
+      <mass
+        value="0.00184" />
+      <inertia
+        ixx="2.2933E-07"
+        ixy="3.46E-14"
+        ixz="-7.3224E-17"
+        iyy="2.3026E-07"
+        iyz="-2.1911E-16"
+        izz="1.6652E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll4.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj4"  type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-3.1416 0 1.7937" />
+    <parent
+      link="ll3" />
+    <child
+      link="ll4" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="ll5">
+    <inertial>
+      <origin
+        xyz="3.3201E-11 -8.7416E-10 0.087054"
+        rpy="0 0 0" />
+      <mass
+        value="1.4192E-07" />
+      <inertia
+        ixx="8.8317E-15"
+        ixy="-4.1009E-27"
+        ixz="-3.2671E-20"
+        iyy="1.1249E-14"
+        iyz="1.6771E-21"
+        izz="6.4968E-15" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll5.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj5"  type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 1.5708" />
+    <parent
+      link="ll4" />
+    <child
+      link="ll5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="ll6">
+    <inertial>
+      <origin
+        xyz="-6.023E-08 -0.00017676 4.2448E-09"
+        rpy="0 0 0" />
+      <mass
+        value="4.1377E-08" />
+      <inertia
+        ixx="7.8329E-15"
+        ixy="1.2574E-19"
+        ixz="1.8932E-20"
+        iyy="1.3829E-14"
+        iyz="4.9358E-21"
+        izz="2.1606E-14" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/ll6.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="lj6"  type="revolute">
+    <origin
+      xyz="0 0 0.086704"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="ll5" />
+    <child
+      link="ll6" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="eef1">
+    <inertial>
+      <origin
+        xyz="0 0 -0.085004"
+        rpy="0 0 0" />
+      <mass
+        value="8E-05" />
+      <inertia
+        ixx="1.92E-10"
+        ixy="1.551E-24"
+        ixz="-1.805E-24"
+        iyy="4.48E-10"
+        iyz="-8.6443E-26"
+        izz="5.44E-10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/eef1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/eef1.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="ee"   type="fixed">
+    <origin
+      xyz="0 -0.086704 0"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="ll6" />
+    <child
+      link="eef1" />
+    <axis
+      xyz="0 0 0" />  </joint>
+  <link  name="rl1">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl1.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj1"  type="revolute">
+    <origin
+      xyz="0.03 0 0"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="base" />
+    <child
+      link="rl1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-2.3562"
+      upper="1.5708"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="rl2">
+    <inertial>
+      <origin
+        xyz="5.5511E-17 0.0097573 -0.13801"
+        rpy="0 0 0" />
+      <mass
+        value="0.082042" />
+      <inertia
+        ixx="0.00067471"
+        ixy="6.3527E-22"
+        ixz="3.439E-19"
+        iyy="0.0006785"
+        iyz="2.7477E-06"
+        izz="5.4196E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl2.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj2"  type="revolute">
+    <origin
+      xyz="0 0.007 -0.25"
+      rpy="3.1416 1.4591 3.1416" />
+    <parent
+      link="rl1" />
+    <child
+      link="rl2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1"
+      upper="2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="rl3">
+    <inertial>
+      <origin
+        xyz="-4.5788E-10 -5.5511E-17 -0.018353"
+        rpy="0 0 0" />
+      <mass
+        value="0.0087838" />
+      <inertia
+        ixx="3.0213E-06"
+        ixy="3.7303E-14"
+        ixz="-9.9602E-14"
+        iyy="3.1549E-06"
+        iyz="1.3438E-22"
+        izz="4.1577E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl3.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj3"  type="prismatic">
+    <origin
+      xyz="0 0 -0.297"
+      rpy="1.5708 -0.49317 0" />
+    <parent
+      link="rl2" />
+    <child
+      link="rl3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-11.1"
+      upper="11.1"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="rl4">
+    <inertial>
+      <origin
+        xyz="3.2156E-12 9.9609E-12 0.074425"
+        rpy="0 0 0" />
+      <mass
+        value="0.00184" />
+      <inertia
+        ixx="2.2933E-07"
+        ixy="3.46E-14"
+        ixz="-7.3224E-17"
+        iyy="2.3026E-07"
+        iyz="-2.1911E-16"
+        izz="1.6652E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl4.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj4"  type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-3.1416 0 0" />
+    <parent
+      link="rl3" />
+    <child
+      link="rl4" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="rl5">
+    <inertial>
+      <origin
+        xyz="3.3202E-11 -8.7416E-10 0.087054"
+        rpy="0 0 0" />
+      <mass
+        value="1.4192E-07" />
+      <inertia
+        ixx="8.8317E-15"
+        ixy="-4.0774E-27"
+        ixz="-3.2671E-20"
+        iyy="1.1249E-14"
+        iyz="1.6771E-21"
+        izz="6.4968E-15" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl5.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj5"  type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="rl4" />
+    <child
+      link="rl5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="rl6">
+    <inertial>
+      <origin
+        xyz="-6.023E-08 -0.00052676 4.2448E-09"
+        rpy="0 0 0" />
+      <mass
+        value="4.1377E-08" />
+      <inertia
+        ixx="7.8329E-15"
+        ixy="1.2574E-19"
+        ixz="1.8932E-20"
+        iyy="1.3829E-14"
+        iyz="4.9358E-21"
+        izz="2.1606E-14" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/rl6.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="rj6"  type="revolute">
+    <origin
+      xyz="0 0 0.087054"
+      rpy="1.5708 0 0" />
+    <parent
+      link="rl5" />
+    <child
+      link="rl6" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.2"
+      upper="3.2"
+      effort="100"
+      velocity="20" />  </joint>
+  <link  name="eefr">
+    <inertial>
+      <origin
+        xyz="7.6328E-16 1.2212E-15 -0.085004"
+        rpy="0 0 0" />
+      <mass
+        value="8E-05" />
+      <inertia
+        ixx="1.92E-10"
+        ixy="2.491E-24"
+        ixz="-1.2708E-24"
+        iyy="4.48E-10"
+        iyz="-6.7946E-25"
+        izz="5.44E-10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/eefr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://go_scara/meshes/eefr.STL" />
+      </geometry>
+    </collision>  </link>
+  <joint name="eefrj" type="fixed">
+    <origin
+      xyz="0 -0.087054 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="rl6" />
+    <child
+      link="eefr" />
+    <axis
+      xyz="0 0 0" />  </joint>
+</robot>

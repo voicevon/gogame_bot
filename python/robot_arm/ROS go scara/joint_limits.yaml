@@ -1,0 +1,64 @@
+firm # joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  lj1:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  lj2:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  lj3:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  lj4:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  lj5:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  lj6:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj1:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj2:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj3:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj4:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj5:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
+  rj6:
+    has_velocity_limits: true
+    max_velocity: 20
+    has_acceleration_limits: true
+    max_acceleration: 1
