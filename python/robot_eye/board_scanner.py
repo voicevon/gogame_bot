@@ -78,6 +78,81 @@ class BoardScanner():
         self.IsShowBlackImg = False  # 是否显示识别黑子的图片
         self.IsShowWhiteImg = False  # 是否显示识别白子的图片
 
+    def get_whole_area_of_chessboard_new_idea(self,img):
+        # https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
+        # https://www.geeksforgeeks.org/perspective-transformation-python-opencv/
+
+
+        # detect edges using Canny
+        img_target = img.copy()
+        img_approx = img.copy()
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # canny = cv2.Canny(img, 149,150)
+        canny = cv2.Canny(img_gray, 120,200)
+        cv2.imshow('canny', canny)
+        # retrieve contours by findCountours
+        contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        img_contour = cv2.drawContours(img, contours, -1, (0,255,75), 1)
+        cv2.imshow('contours',img_contour)
+
+        target_contour = None
+        approx = None
+        # print('````````````````````````````````````````````')
+        for con in contours:
+            rec = cv2.boundingRect(con)
+            area = cv2.contourArea(con)
+            if area > 17000:
+                # print(rec, area)
+                # target_contour.append(con)
+                target_contour = con
+                target_rec = rec
+                # cv2.imshow('im2',im2)
+                # approxPolyDP to decrease number of vericales
+                epsilon = 0.1 * cv2.arcLength(con, True)
+                approx = cv2.approxPolyDP(con, epsilon, True)
+
+
+        # img_target = cv2.drawContours(img, target_contour, -1, (0,255,0), 2)
+        # print(target_rec)
+        # (rec,area) = target_contour
+        if target_rec is None:
+            return 
+        x1,y1,x2,y2 = target_rec
+        bounding_rectangle = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
+        cv2.imshow('target',bounding_rectangle)
+
+        approx_image = cv2.drawContours(img_approx, approx, -1, (255,0,0),22)
+        # print('>>>>>>>>>>>>>>>>>>>>>>', approx)
+        # print('----------------------------------------------------------')
+        cv2.imshow('approx', approx_image)
+
+        # tr = approx[1]
+        # print(tr)
+        # x,y = tr[0]   
+        # print(x,y)
+        
+        # source = cv2.line(img, approx)
+        result = None
+        if len(approx) == 4:
+            x_tr, y_tr = approx[0][0]
+            x_tl, y_tl = approx[1][0]
+            x_bl, y_bl = approx[2][0]
+            x_br, y_br = approx[3][0]
+            # Locate points of the documents or object which you want to transform 
+            width = self.__CROP_WIDTH
+            height = self.__CROP_HEIGHT
+            pts1 = numpy.float32([[x_tl, y_tl], [x_bl, y_bl], [x_br, y_br], [x_tr, y_tr]]) 
+            target_point = numpy.float32([[0, 0], [0, height], [width, height], [width, 0]])
+            
+            # Apply Perspective Transform Algorithm 
+            matrix = cv2.getPerspectiveTransform(pts1, target_point) 
+            result = cv2.warpPerspective(approx_image, matrix, (self.__CROP_WIDTH, self.__CROP_HEIGHT)) 
+            # print(x_tr, y_tr)
+            cv2.imshow('finnal',result)
+        cv2.waitKey(1)
+        if result is not None:
+            singleQiPan = result[0:self.__CROP_HEIGHT, 0:self.__CROP_WIDTH]
+            return singleQiPan
 
 
     def get_whole_area_of_chessboard(self, img):

@@ -86,129 +86,59 @@ class SingleEye():
             ret, img_origin = self.__capture_newest_image()
             if ret:
                 # got origin image
-                img_board = self.__board_scanner.get_whole_area_of_chessboard(img_origin)
+                # img_board = self.__board_scanner.get_whole_area_of_chessboard(img_origin)
+                img_board = self.__board_scanner.get_whole_area_of_chessboard_new_idea(img_origin)
                 if img_board is not None:
                     # got board image
                     layout, stable_depth = self.__layout_scanner.start_scan(img_board, self.__LAYOUT_STABLE_DEPTH)
         layout.rename_to('stable detect layout (depth = %d)' % stable_depth)
         return layout
 
-    def Toushi(self, img, x, y, w, h, contour):
-        # cv2.imshow("imgss", img)
-        height, width = img.shape[:2]
-        dp1 = dp2 = dp3 = dp4 = 10000
-        for i in range(len(contour)):
-            ddp1 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-y)
-            if ddp1<dp1:
-                dp1 = ddp1
-                pp1 = contour[i][0]
-            ddp2 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-y)
-            if ddp2<dp2:
-                dp2 = ddp2
-                pp2 = contour[i][0]
-            ddp3 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-(y+h))
-            if ddp3<dp3:
-                dp3 = ddp3
-                pp3 = contour[i][0]
-            ddp4 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-(y+h))
-            if ddp4<dp4:
-                dp4 = ddp4
-                pp4 = contour[i][0]
-        pts1 = np.float32([pp1, pp2, pp3, pp4])
-        pts2 = np.float32([[x, y],[x+430,y],[x+430,y+430],[x, y+430]])
-        # print("pts1:{0}".format(pts1))
-        # print("pts2:{0}".format(pts2))
-        M = cv2.getPerspectiveTransform(pts1,pts2)
-        dst = cv2.warpPerspective(img, M, (width, height))
-        # cv2.imshow("dst", dst)
-        return dst
+    # def Toushi(self, img, x, y, w, h, contour):
+    #     # cv2.imshow("imgss", img)
+    #     height, width = img.shape[:2]
+    #     dp1 = dp2 = dp3 = dp4 = 10000
+    #     for i in range(len(contour)):
+    #         ddp1 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-y)
+    #         if ddp1<dp1:
+    #             dp1 = ddp1
+    #             pp1 = contour[i][0]
+    #         ddp2 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-y)
+    #         if ddp2<dp2:
+    #             dp2 = ddp2
+    #             pp2 = contour[i][0]
+    #         ddp3 = abs(contour[i][0][0]-(x+w)) + abs(contour[i][0][1]-(y+h))
+    #         if ddp3<dp3:
+    #             dp3 = ddp3
+    #             pp3 = contour[i][0]
+    #         ddp4 = abs(contour[i][0][0]-x) + abs(contour[i][0][1]-(y+h))
+    #         if ddp4<dp4:
+    #             dp4 = ddp4
+    #             pp4 = contour[i][0]
+    #     pts1 = np.float32([pp1, pp2, pp3, pp4])
+    #     pts2 = np.float32([[x, y],[x+430,y],[x+430,y+430],[x, y+430]])
+    #     # print("pts1:{0}".format(pts1))
+    #     # print("pts2:{0}".format(pts2))
+    #     M = cv2.getPerspectiveTransform(pts1,pts2)
+    #     dst = cv2.warpPerspective(img, M, (width, height))
+    #     # cv2.imshow("dst", dst)
+    #     return dst
 
-    def compo(self,img):
+    # def compo(self,img):
 
-        dst = self.Toushi(img,x,y,w,h,qipan)
-        xNew = x + 0
-        yNew = y + 0
-        xEnd = x + self.__CROP_WIDTH
-        yEnd = y + self.__CROP_HEIGHT
-        # cv2.rectangle(Img,(xNew,yNew),(xEnd,yEnd),(0,255,),1)
-
-
-        singleQiPan = dst[yNew:yEnd, xNew:xEnd]
-        CvDebugger.show_debug_image('board_scaner', singleQiPan, 'Got it')
-        return singleQiPan
-
-    def new_idea(self,img):
-        # https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
-        # https://www.geeksforgeeks.org/perspective-transformation-python-opencv/
+    #     dst = self.Toushi(img,x,y,w,h,qipan)
+    #     xNew = x + 0
+    #     yNew = y + 0
+    #     xEnd = x + self.__CROP_WIDTH
+    #     yEnd = y + self.__CROP_HEIGHT
+    #     # cv2.rectangle(Img,(xNew,yNew),(xEnd,yEnd),(0,255,),1)
 
 
-        # detect edges using Canny
-        img_target = img.copy()
-        img_approx = img.copy()
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # canny = cv2.Canny(img, 149,150)
-        canny = cv2.Canny(img_gray, 149,150)
-        cv2.imshow('canny', canny)
-        # retrieve contours by findCountours
-        contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        img_contour = cv2.drawContours(img, contours, -1, (0,255,75), 1)
-        cv2.imshow('contours',img_contour)
+    #     singleQiPan = dst[yNew:yEnd, xNew:xEnd]
+    #     CvDebugger.show_debug_image('board_scaner', singleQiPan, 'Got it')
+    #     return singleQiPan
 
-        target_contour = None
-        approx = None
-        # print('````````````````````````````````````````````')
-        for con in contours:
-            rec = cv2.boundingRect(con)
-            area = cv2.contourArea(con)
-            if area > 17000:
-                # print(rec, area)
-                # target_contour.append(con)
-                target_contour = con
-                target_rec = rec
-                # cv2.imshow('im2',im2)
-                # approxPolyDP to decrease number of vericales
-                epsilon = 0.1 * cv2.arcLength(con, True)
-                approx = cv2.approxPolyDP(con, epsilon, True)
-
-
-        # img_target = cv2.drawContours(img, target_contour, -1, (0,255,0), 2)
-        # print(target_rec)
-        # (rec,area) = target_contour
-        if target_rec is None:
-            return 
-        x1,y1,x2,y2 = target_rec
-        bounding_rectangle = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
-        cv2.imshow('target',bounding_rectangle)
-
-        approx_image = cv2.drawContours(img_approx, approx, -1, (255,0,0),22)
-        print('>>>>>>>>>>>>>>>>>>>>>>', approx)
-        print('----------------------------------------------------------')
-        cv2.imshow('approx', approx_image)
-
-        # tr = approx[1]
-        # print(tr)
-        # x,y = tr[0]   
-        # print(x,y)
-        
-        # source = cv2.line(img, approx)
-        if len(approx) == 4:
-            x_tr, y_tr = approx[0][0]
-            x_tl, y_tl = approx[1][0]
-            x_bl, y_bl = approx[2][0]
-            x_br, y_br = approx[3][0]
-            # Locate points of the documents or object which you want to transform 
-            width = 500
-            height = 500
-            pts1 = np.float32([[x_tl, y_tl], [x_bl, y_bl], [x_br, y_br], [x_tr, y_tr]]) 
-            target_point = np.float32([[0, 0], [0, height], [width, height], [width, 0]])
-            
-            # Apply Perspective Transform Algorithm 
-            matrix = cv2.getPerspectiveTransform(pts1, target_point) 
-            result = cv2.warpPerspective(approx_image, matrix, (500, 600)) 
-            # print(x_tr, y_tr)
-            cv2.imshow('finnal',result)
-        cv2.waitKey(1)
-
+    
 
     def get_chessboard_test(self):
         ret, img = self.__capture_newest_image()
@@ -279,7 +209,7 @@ if __name__ == '__main__':
         #     print(m)
 
         # key = click.getchar()
-        key = '8'
+        key = '4'
         if key == '1':
             pass
 
@@ -312,6 +242,7 @@ if __name__ == '__main__':
             rospy.sleep(333)
         
         elif key == '8':
-            myrobotEye.get_chessboard_test()
+            # myrobotEye.get_chessboard_test()
             # layout = myrobotEye.get_stable_layout(app_config.robot_eye.layout_scanner.stable_depth)
             # time.sleep(0.1)
+            pass
