@@ -145,7 +145,9 @@ class SingleEye():
         # detect edges using Canny
         img_target = img.copy()
         img_approx = img.copy()
-        canny = cv2.Canny(img, 149,150)
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # canny = cv2.Canny(img, 149,150)
+        canny = cv2.Canny(img_gray, 149,150)
         cv2.imshow('canny', canny)
         # retrieve contours by findCountours
         contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -172,6 +174,8 @@ class SingleEye():
         # img_target = cv2.drawContours(img, target_contour, -1, (0,255,0), 2)
         # print(target_rec)
         # (rec,area) = target_contour
+        if target_rec is None:
+            return 
         x1,y1,x2,y2 = target_rec
         bounding_rectangle = cv2.rectangle(img_target,(x1,y1),(x1+x2,y1+y2),(255,0,0),2)
         cv2.imshow('target',bounding_rectangle)

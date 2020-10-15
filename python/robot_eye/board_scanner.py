@@ -130,8 +130,8 @@ class BoardScanner():
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255,), 3)
         # # 给识别对象写上标号
         # font=cv2.FONT_HERSHEY_SIMPLEX
-        # cv2.putText(Img,str(1),(x-10,y+10), font, 1,(0,0,255),2)#加减10是调整字符位置
-        # cv2.imshow('Img', Img)
+        # cv2.putText(img,str(1),(x-10,y+10), font, 1,(0,0,255),2)#加减10是调整字符位置
+        # cv2.imshow('Img', img)
         # cv2.waitKey(0)
         # print("i mianji = {0}".format(iMianJi))
         if iMianJi < 170000:
