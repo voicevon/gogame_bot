@@ -37,6 +37,7 @@ class GoManager():
         self.__arm = HumanLevel_RobotArm(app_config.robot_arm.name)
         self.__died_area_scanner = DiedAreaScanner()
         self.__mqtt = mqtt.Client("xuming-2038-2334") #create new instance
+        self.target_demo_layout = ChessboardLayout('Demo_target')
 
         self.__BLACK = app_config.game_rule.cell_color.black
         self.__WHITE = app_config.game_rule.cell_color.white
@@ -133,7 +134,7 @@ class GoManager():
             self.__goto = self.at_demo_from_warehouse
         
         if command == 1:
-            self.__goto = self.at_demo_mover
+            self.__goto = self.at_demo_mover(do_vision_check=True)
 
         if command == 2:
             self.__goto = self.at_demo_remove_to_trashbin_black
@@ -308,20 +309,18 @@ class GoManager():
             self.__remove_one_cell_to_trash(self.__BLACK)
         self.__goto = self.at_state_game_over
 
-    def at_demo_mover(self):
-        # self.__arm.action_pickup_chess_from_warehouse()
-        # self.__arm.action_place_chess_to_a_cell('A1')
-        # self.__arm.action_pickup_chess_from_warehouse()
-        # self.__arm.action_place_chess_to_a_cell('A2')
+    def at_demo_mover(self, do_vision_check=False):
         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
         layout.print_out()
         cell = layout.get_first_cell(self.__BLACK)
         if cell is not None:
             print('First black cell = %s' % cell.name)
+            # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
             id_black = cell.id
             cell = layout.get_first_cell(self.__WHITE)
             if cell is not None:
                 print('First white cell = %s' % cell.name)
+                # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
                 id_white = cell.id
                 id = id_black
                 if id_white < id_black:
@@ -330,14 +329,21 @@ class GoManager():
                 for i in range(id,359):
                     cell.from_id(i)
                     self.__arm.action_pickup_chess_from_a_cell(cell.name)
+                    self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLANK)
                     cell.from_id(i+2)
-                    self.__arm.action_place_chess_to_a_cell(cell.name,auto_park=False)
-
+                    self.__arm.action_place_chess_to_a_cell(cell.name,auto_park=do_vision_check)
+                    cell_color = layout.get_cell_color_col_row(cell.col_id, cell.row_id)
+                    self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, cell_color)
                 self.__arm.action_pickup_chess_from_a_cell('B19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=False)
                 self.__arm.action_pickup_chess_from_a_cell('A19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=True)
-
+                
+                if do_vision_check:
+                    layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
+                    diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
+                    if len(diffs) > 0:
+                        key = input ('Test failed! Please check')
         if True:
             self.__goto = self.at_state_game_over
 

@@ -96,6 +96,7 @@ class BoardScanner():
             (x,y)=approx[3][0]
             points.append((x,y))
             
+            points.sort()
             x_bl, y_bl = points[0]
             x_tl, y_tl = points[1]
             x_br, y_br = points[2]
@@ -147,6 +148,7 @@ class BoardScanner():
                     whole_board_image = perspectived[0:self.__CROP_HEIGHT, 0:self.__CROP_WIDTH]
                     cv2.imshow('whole_board', whole_board_image)
                     cv2.waitKey(1)
+                    self.__show_detection_line(whole_board_image)
                     return whole_board_image
 
     def get_whole_area_of_chessboard(self, img):

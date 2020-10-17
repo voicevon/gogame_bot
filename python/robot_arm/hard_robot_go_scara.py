@@ -115,7 +115,7 @@ class Hard_robot_GoScara(Hard_robot):
             print('[Warning: Hard_Robot.Convert_to_gcode_Send(). mode == OFF_LINE')
             return 
         firmware_angle_x = angle_x + 180
-        gcode = 'G1 X' + str(round(firmware_angle_x,2)) + ' Y' + str(round(angle_y,2))
+        gcode = 'G1 X' + str(round(firmware_angle_x,2)) + ' Y' + str(round(angle_y,2)) + ' F18000'
         self._my_serial.SendCommandCode(gcode)
 
         # position_z = joint_states.position[2] * 1000
@@ -135,7 +135,7 @@ class Hard_robot_GoScara(Hard_robot):
     def set_joints_angle_in_degree(self, IK_dict):
         self.current_pose_IK.from_diction(IK_dict)
         firmware_angle_x = IK_dict['j1'] + 180
-        gcode = 'G1 X' + str(firmware_angle_x) + ' Y' + str(IK_dict['j2'])
+        gcode = 'G1 X' + str(firmware_angle_x) + ' Y' + str(IK_dict['j2']) + ' F18000'
         # print(gcode)
         if self.mode == HARD_ROBOT_ONLINE_LEVEL.OFF_LINE:
             print ('[Warning]: hard_robot is offline.')
