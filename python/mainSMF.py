@@ -317,7 +317,9 @@ class GoManager():
             print('First black cell = %s' % cell.name)
             # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
             id_black = cell.id
+            self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
             cell = layout.get_first_cell(self.__WHITE)
+            self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
             if cell is not None:
                 print('First white cell = %s' % cell.name)
                 # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
@@ -328,22 +330,23 @@ class GoManager():
                 
                 for i in range(id,359):
                     cell.from_id(i)
+                    cell_color = layout.get_cell_color_col_row(cell.col_id, cell.row_id)
                     self.__arm.action_pickup_chess_from_a_cell(cell.name)
                     self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLANK)
                     cell.from_id(i+2)
                     self.__arm.action_place_chess_to_a_cell(cell.name,auto_park=do_vision_check)
-                    cell_color = layout.get_cell_color_col_row(cell.col_id, cell.row_id)
                     self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, cell_color)
+                    if do_vision_check:
+                        layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
+                        diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
+                        if len(diffs) > 0:
+                            key = raw_input ('Test failed! Please check')
                 self.__arm.action_pickup_chess_from_a_cell('B19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=False)
                 self.__arm.action_pickup_chess_from_a_cell('A19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=True)
                 
-                if do_vision_check:
-                    layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
-                    diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
-                    if len(diffs) > 0:
-                        key = input ('Test failed! Please check')
+
         if True:
             self.__goto = self.at_state_game_over
 
