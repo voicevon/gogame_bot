@@ -134,7 +134,7 @@ class GoManager():
             self.__goto = self.at_demo_from_warehouse
         
         if command == 1:
-            self.__goto = self.at_demo_mover(do_vision_check=True)
+            self.__goto = self.at_demo_mover
 
         if command == 2:
             self.__goto = self.at_demo_remove_to_trashbin_black
@@ -309,7 +309,8 @@ class GoManager():
             self.__remove_one_cell_to_trash(self.__BLACK)
         self.__goto = self.at_state_game_over
 
-    def at_demo_mover(self, do_vision_check=False):
+    def at_demo_mover(self):  # Must be no arguiment function for self.__goto
+        do_vision_check = True
         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
         layout.print_out()
         cell = layout.get_first_cell(self.__BLACK)
@@ -348,9 +349,7 @@ class GoManager():
                 self.__arm.action_pickup_chess_from_a_cell('A19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=True)
                 
-
-        if True:
-            self.__goto = self.at_state_game_over
+        self.__goto = self.at_state_game_over
 
     def test_die_area_detector(self):
         layout = self.__eye.get_stable_layout(self.__MARK_STABLE_DEPTH)

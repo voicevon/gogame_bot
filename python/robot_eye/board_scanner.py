@@ -122,7 +122,7 @@ class BoardScanner():
             # Apply Perspective Transform Algorithm 
             source_points = numpy.float32([[x_tl, y_tl], [x_bl, y_bl], [x_br, y_br], [x_tr, y_tr]]) 
             target_point = numpy.float32([[0, 0], [0, self.__CROP_HEIGHT], [self.__CROP_WIDTH, self.__CROP_HEIGHT], [self.__CROP_WIDTH, 0]])
-            approx_image = cv2.drawContours(img_origin, approx, -1, (255,0,0),22)
+            approx_image = cv2.drawContours(img_origin, approx, -1, (255,0,0),1)
             matrix = cv2.getPerspectiveTransform(source_points, target_point) 
             perspectived = cv2.warpPerspective(approx_image, matrix, (self.__CROP_WIDTH, self.__CROP_HEIGHT)) 
             return perspectived
