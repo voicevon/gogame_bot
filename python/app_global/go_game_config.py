@@ -62,7 +62,7 @@ class app_config:
             show_scan_image = True 
             
             class inspecting:
-                cell_name = 'A17'
+                cell_name = 'A20'
                 counter = 100
         class mark_scanner:
             stable_depth = 5
@@ -88,4 +88,5 @@ class CvDebugger():
 if __name__ == "__main__":
     global_config = app_config
     s1 = global_config.robot_arm.name
+    
     print(s1)

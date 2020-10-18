@@ -10,13 +10,12 @@ import socket
 import logging
 
 import sys
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/go_game_board')
-from chessboard_cell import ChessboardCell
-from chessboard import ChessboardLayout
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from go_game_board.chessboard_cell import ChessboardCell
+from go_game_board.chessboard import ChessboardLayout
 
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/app_global')
-from color_print import CONST
-from go_game_config import app_config
+from app_global.color_print import CONST
+from app_global.go_game_config import app_config
 
 
 class GoGameAiClient(object):
