@@ -3,6 +3,7 @@ import cv2
 import numpy
 
 import sys
+import time
 
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from app_global.color_print import CONST
@@ -105,17 +106,24 @@ class CellScanner():
                 masked_image = cv2.bitwise_and (cell_image, cell_image, mask=mask_circle)
                 if is_inspected:
                     cv2.imshow('inspecting cell', masked_image)
+                    cv2.waitKey(1)
                 # What color in this circle? black or white
                 average_brightness = numpy.mean(masked_image)
                 # print(self.__FC_RESET + 'average_brightness= %d' %average_brightness)
                 if average_brightness > 30:
-                    print(x, y)
-                    if pow((x - width/2),2)  + pow((y-height/2),2) < 9 * 9:  # 51% of a circle can also be detected!
+                    real_raduis = pow((x - width/2),2)  + pow((y-height/2),2) 
+                    # print('inpseting x,y,real_raduis  ', x, y ,real_raduis) 
+                    if real_raduis < 85:  # 51% of a circle can also be detected!
                         # https://stackoverflow.com/questions/20698613/detect-semicircle-in-opencv
+                        # print('Positive')
                         cell_color = self.__WHITE
+                    # else:
+                    #     print('Negtive')
+                    #     cv2.waitKey(100000)
         else:
             if is_inspected: 
                 print('detected cell_image,  circles=%d' %len(detected_circles))
+                cv2.waitKey(10000)
         return cell_color
    
     def __detect_circles(self, cropped_img, show_processing_image=True):
@@ -128,25 +136,33 @@ class CellScanner():
 
         if circles is None:
             if show_processing_image:
-                cv2.imshow('nn center lines', cropped_img)
-                cv2.imshow('nn gray', gray)
-                cv2.imshow('nn blur', blur)
-                cv2.imshow('nn canny', canny)
+                cv2.imshow('no circle origin', cropped_img)
+                cv2.imshow('no circle gray', gray)
+                cv2.imshow('no circle blur', blur)
+                cv2.imshow('no circle canny', canny)
                 cv2.waitKey(1)
-        if circles is not None:
+        else:
+            # print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
             detected_circles = numpy.uint16(numpy.around(circles))
-            if show_processing_image:
+            # print ('circles count= ', len(detected_circles))
+            if True:
+            # if show_processing_image:
                 # draw circles
                 img = cropped_img.copy()
                 for (x,y,r) in detected_circles[0,:]:
-                    # outer circle
+                    # outer circle, is green color
                     cv2.circle(img,(x,y),r,(0,255,0),thickness=1)
-                    # for showing the center of the circle, is a small 
+                    # for showing the center of the circle, is a small , is red color
                     cv2.circle(img,(x,y),3,(0,0,255),1)
-                cv2.imshow('center lines',img)
-                cv2.imshow('gray',gray)
-                cv2.imshow('blur',blur)
+                    # print('ttttttttttttttt  x, y, r  ', x,y,r )
+                cv2.imshow('circled: center lines',img)
+                cv2.imshow('circled gray',gray)
+                cv2.imshow('circled blur',blur)
                 cv2.waitKey(1)
+
+            if len(detected_circles) > 1:
+                print('More than one circles are detected')
+                cv2.waitKey(10000)
             return detected_circles
         return None
 
