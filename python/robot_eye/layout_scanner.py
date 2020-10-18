@@ -101,6 +101,7 @@ class LayoutScanner():
                 cell_img_small = img_board[y1:y2, x1:x2]
 
                 is_inspected_cell = False
+                self.__inspect_cell.from_name(app_config.robot_eye.layout_scanner.inspecting.cell_name)
                 if (col == 18 - self.__inspect_cell.col_id) and (18- row == self.__inspect_cell.row_id):
                     cv2.imshow('bbbb',cell_img_big)
                     cv2.imshow('ssss',cell_img_small)

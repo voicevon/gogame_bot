@@ -58,11 +58,11 @@ class app_config:
                 cell_detector_range = 1.6
 
         class layout_scanner:
-            stable_depth = 5
+            stable_depth = 6
             show_scan_image = True 
             
             class inspecting:
-                cell_name = 'A20'
+                cell_name = 'T11'
                 counter = 100
         class mark_scanner:
             stable_depth = 5

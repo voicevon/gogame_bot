@@ -340,6 +340,8 @@ class GoManager():
                         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
                         diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
                         if len(diffs) > 0:
+                            cell = diffs[0]
+                            app_config.robot_eye.layout_scanner.inspecting.cell_name = cell.name
                             key = raw_input ('Test failed! Please check')
                 self.__arm.action_pickup_chess_from_a_cell('B19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=False)
