@@ -7,14 +7,10 @@ import cv2
 import numpy
 
 import sys
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/go_game_board')
-from chessboard import ChessboardLayout,ChessboardCell
-
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/app_global')
-from color_print import CONST
-
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/go_game_const')
-from go_game_config import app_config
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from go_game_board.chessboard import ChessboardLayout, ChessboardCell
+from app_global.color_print import CONST
+from app_global.go_game_config import app_config
 
 class LayoutScanner():
 
@@ -36,8 +32,9 @@ class LayoutScanner():
         self.__SPACE_Y = app_config.robot_eye.cell_scanner.dimension.cell_space_y
         self.__VIEW_RANGE = 1.6
 
-        self.__INSPECT_CELL = app_config.robot_eye.layout_scanner.inspecting.col_row
-
+        self.__inspect_cell =  ChessboardCell()
+        self.__inspect_cell.from_name(app_config.robot_eye.layout_scanner.inspecting.cell_name)
+        print(self.__inspect_cell.to_diction())
 
         self.__FC_GREEN = CONST.print_color.fore.green
         self.__FC_YELLOW = CONST.print_color.fore.yellow
@@ -104,7 +101,7 @@ class LayoutScanner():
                 cell_img_small = img_board[y1:y2, x1:x2]
 
                 is_inspected_cell = False
-                if (col,row) == self.__INSPECT_CELL:
+                if (col == 18 - self.__inspect_cell.col_id) and (18- row == self.__inspect_cell.row_id):
                     cv2.imshow('bbbb',cell_img_big)
                     cv2.imshow('ssss',cell_img_small)
                     is_inspected_cell = True
@@ -143,3 +140,7 @@ class LayoutScanner():
                 cv2.circle(cp, (x,y),16, (255,0,0), 3)
             cv2.imshow('layout_scanner', cp)
             cv2.waitKey(1)
+
+
+if __name__ == "__main__":
+    runner = LayoutScanner()

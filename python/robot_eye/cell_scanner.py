@@ -4,10 +4,9 @@ import numpy
 
 import sys
 
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/app_global')
-from color_print import CONST
-
-from go_game_config import app_config
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from app_global.color_print import CONST
+from app_global.go_game_config import app_config
 
 class CellScanner():
     def __init__(self, board_mean):
@@ -104,13 +103,15 @@ class CellScanner():
             for (x,y,r) in detected_circles[0]:
                 cv2.circle(mask_circle, (x,y), radius=r, color=1, thickness=-1)
                 masked_image = cv2.bitwise_and (cell_image, cell_image, mask=mask_circle)
-                cv2.imshow('masked_image', masked_image)
+                if is_inspected:
+                    cv2.imshow('inspecting cell', masked_image)
                 # What color in this circle? black or white
                 average_brightness = numpy.mean(masked_image)
                 # print(self.__FC_RESET + 'average_brightness= %d' %average_brightness)
                 if average_brightness > 30:
-                    cell_color = self.__WHITE
-                    # print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
+                    print(x, y)
+                    if pow((x - width/2),2)  + pow((y-height/2),2) < 9 * 9:  # 51% of a circle can also be detected!
+                        cell_color = self.__WHITE
         else:
             if is_inspected: 
                 print('detected cell_image,  circles=%d' %len(detected_circles))

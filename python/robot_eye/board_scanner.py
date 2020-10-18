@@ -7,10 +7,9 @@ import rospy
 
 
 import sys
-sys.path.append('/home/xm/gitrepo/ros_marlin_bridge/app_global')
-from color_print import CONST
-
-from go_game_config import app_config, CvDebugger
+sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+from app_global.color_print import CONST
+from app_global.go_game_config import app_config, CvDebugger
 
 
 class BoardScanner():

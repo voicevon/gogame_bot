@@ -49,8 +49,8 @@ class app_config:
             show_board_image = True
 
             class cropping:
-                crop_width_on_x = 430
-                crop_height_on_y = 430
+                crop_width_on_x = 428
+                crop_height_on_y = 428
         class cell_scanner:
             class dimension:
                 cell_space_x = 22
@@ -62,7 +62,7 @@ class app_config:
             show_scan_image = True 
             
             class inspecting:
-                col_row = (-1,-1)
+                cell_name = 'A17'
                 counter = 100
         class mark_scanner:
             stable_depth = 5
