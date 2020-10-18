@@ -111,6 +111,7 @@ class CellScanner():
                 if average_brightness > 30:
                     print(x, y)
                     if pow((x - width/2),2)  + pow((y-height/2),2) < 9 * 9:  # 51% of a circle can also be detected!
+                        # https://stackoverflow.com/questions/20698613/detect-semicircle-in-opencv
                         cell_color = self.__WHITE
         else:
             if is_inspected: 
