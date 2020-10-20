@@ -88,7 +88,6 @@ class ChessboardLayout():
     def set_cell_value(self, col_id, row_id, new_value):
         self._layout_array[col_id][row_id] = new_value
         
-    # 比较当前棋盘与之前的棋盘，确定人走的位置；没有变化返回空，有变化返回位置's cell_name，如Q5。目前按照人走白来获取的。
     def compare_with(self, target_layout, do_print_out=False):
         '''
         return: 

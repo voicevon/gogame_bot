@@ -76,13 +76,13 @@ class CellScanner():
 
         cell_color = self.__BLANK
         count = cv2.countNonZero(bin_image)
-        if count > 180:
+        if count > 180: 
             cell_color = self.__BLACK
 
         if is_inspected:
-            cv2.imshow('blur_black', blur)
-            cv2.imshow('bin_image', bin_image)
-            print (count)
+            cv2.imshow('scan black blur', blur)
+            cv2.imshow('scab bkacj bin', bin_image)
+            print ('scan_black_counter = %i' %count)
         return cell_color
 
         
@@ -113,7 +113,7 @@ class CellScanner():
                 if average_brightness > 30:
                     real_raduis = pow((x - width/2),2)  + pow((y-height/2),2) 
                     # print('inpseting x,y,real_raduis  ', x, y ,real_raduis) 
-                    if real_raduis < 85:  # 51% of a circle can also be detected!
+                    if real_raduis < 130:  # 51% of a circle can also be detected!
                         # https://stackoverflow.com/questions/20698613/detect-semicircle-in-opencv
                         # print('Positive')
                         cell_color = self.__WHITE
@@ -129,7 +129,7 @@ class CellScanner():
     def __detect_circles(self, cropped_img, show_processing_image=True):
         # detect circles
         gray = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2GRAY)
-        blur = cv2.medianBlur(gray,7)
+        blur = cv2.medianBlur(gray,3)
         canny = cv2.Canny(gray,100,200)
         circles = cv2.HoughCircles(blur, method=cv2.HOUGH_GRADIENT, dp=1, minDist= 1, 
                                     minRadius=8, maxRadius=15, param1=1, param2=20)
@@ -145,8 +145,8 @@ class CellScanner():
             # print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
             detected_circles = numpy.uint16(numpy.around(circles))
             # print ('circles count= ', len(detected_circles))
-            if True:
-            # if show_processing_image:
+            # if True:
+            if show_processing_image:
                 # draw circles
                 img = cropped_img.copy()
                 for (x,y,r) in detected_circles[0,:]:

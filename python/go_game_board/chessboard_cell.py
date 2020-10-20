@@ -48,6 +48,10 @@ class ChessboardCell():
         target_diction = {'id':self.id, 'name':self.name, 'row_id':self.row_id, 'col_id':self.col_id,'col_leter':self.col_letter}
         return target_diction
 
+    def to_camera__board_xy(self):
+        x = 22 * (18 - self.col_id) + 16
+        y = 22 * (18 - self.row_id) + 16
+        return (x,y)
 
 if __name__ == "__main__":
     cell = ChessboardCell()

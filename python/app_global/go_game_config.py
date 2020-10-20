@@ -65,7 +65,7 @@ class app_config:
             show_scan_image = True 
             
             class inspecting:
-                cell_name = 'A19'
+                cell_name = 'T14'
                 counter = 100
         class mark_scanner:
             stable_depth = 5

@@ -111,7 +111,7 @@ class LayoutScanner():
                 color = cell_scanner.scan_white(cell_img_big, is_inspected_cell)
                 detected_layout.play_col_row(col_id=18-col, row_id=18-row, color_code=color)
                 if color != self.__WHITE:
-                    color = cell_scanner.scan_black(cell_img_small, is_inspected=False)
+                    color = cell_scanner.scan_black(cell_img_small, is_inspected_cell)
                     detected_layout.play_col_row(col_id=18-col, row_id=18-row, color_code=color)
 
         stable_depth = self.__append_to_history(detected_layout)
@@ -124,22 +124,27 @@ class LayoutScanner():
 
 
     def __show_debug(self, img_board,stable_depth):
-        cp = img_board.copy()
-        cv2.putText(cp, 'Depth= ' + str(stable_depth),(10,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1)
+        copy = img_board.copy()
+        cv2.putText(copy, 'Depth= ' + str(stable_depth),(10,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1)
         if len(self.__history) > 2:
             diffs = self.__history[-1].compare_with(self.__history[-2])
             text = ''
             for name,color_a, color_b in diffs:
                 text += '' + name + ','
-            cv2.putText(cp, 'diffs= ' + text, (10,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 1)
+               # draw a red circle on each different cells
+                diff_cell = ChessboardCell()
+                diff_cell.from_name(name)
+                x,y = diff_cell.to_camera__board_xy()
+                cv2.circle(copy, (x,y), 16, (0,0,255), 2)
+            # draw a blue circle on last_moving cell
             cell = ChessboardCell()
             cell_name = app_config.current_game.lastest_move_cell_name
             if cell_name is not None:
                 cell.from_name(cell_name)
-                x = 100
-                y = 100
-                cv2.circle(cp, (x,y),16, (255,0,0), 3)
-            cv2.imshow('layout_scanner', cp)
+                x,y = cell.to_camera__board_xy()
+                cv2.circle(copy, (x,y),16, (255,0,0), 3)
+            cv2.putText(copy, 'diffs= ' + text, (10,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 1)
+            cv2.imshow('layout_scanner', copy)
             cv2.waitKey(1)
 
 
