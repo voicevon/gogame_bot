@@ -213,12 +213,23 @@ class GoManager():
     def at_state_compare_layout_black(self):
         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
         diffs = self.__ai_go.layout.compare_with(layout)
+
+        same = False
         if len(diffs) == 0:
-            self.__goto = self.at_state_user_play
+            same = True
+        elif len(diffs) == 1:
+            # Only one cell is different.
+            cell_name, ai_color, scanned_color = diffs[0]
+            if scanned_color == self.__WHITE:
+                # And the scanned layout says: it's white color, because it's put by user, He runs so fast! :)
+                same = True
+        if same:
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Now please place your chess onto the board. ')
+            self.__goto = self.at_state_user_play
             self.__mqtt.publish('go_game/smf/status','user_playing',retain=True)
             self.__mqtt.publish(topic="fishtank/switch/r4/command",payload="ON",retain=True)
         else:
+            # more than one cells are different,  or the only one different cell is black color. 
             diffs = self.__ai_go.layout.compare_with(layout, do_print_out=True)
             time.sleep(10)
 
@@ -310,7 +321,7 @@ class GoManager():
         self.__goto = self.at_state_game_over
 
     def at_demo_mover(self):  # Must be no arguiment function for self.__goto
-        do_vision_check = True
+        do_vision_check = app_config.mainloop.at_demo_mover.do_vision_check
         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
         layout.print_out()
         cell = layout.get_first_cell(self.__BLACK)
@@ -341,13 +352,15 @@ class GoManager():
                         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
                         diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
                         if len(diffs) > 0:
-                            cell = diffs[0]
-                            app_config.robot_eye.layout_scanner.inspecting.cell_name = cell.name
+                            cell_name, source_cell_color, target_cell_color = diffs[0]
+                            app_config.robot_eye.layout_scanner.inspecting.cell_name = cell_name
                             key = raw_input ('Test failed! Please check')
                 self.__arm.action_pickup_chess_from_a_cell('B19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=False)
+                self.target_demo_layout.set_cell_value_from_name('B19',self.__BLANK)
                 self.__arm.action_pickup_chess_from_a_cell('A19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=True)
+                self.target_demo_layout.set_cell_value_from_name('A19',self.__BLANK)
                 
         self.__goto = self.at_state_game_over
 

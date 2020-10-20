@@ -80,6 +80,11 @@ class ChessboardLayout():
     def get_cell_color_col_row(self, col_id, row_id):
         return self._layout_array[col_id][row_id]
     
+    def set_cell_value_from_name(self, cell_name, new_value):
+        cell = ChessboardCell()
+        cell.from_name(cell_name)
+        self.set_cell_value(self, cell.col_id, self.row_id, new_value)
+
     def set_cell_value(self, col_id, row_id, new_value):
         self._layout_array[col_id][row_id] = new_value
         

@@ -162,7 +162,7 @@ class CellScanner():
 
             if len(detected_circles) > 1:
                 print('More than one circles are detected')
-                cv2.waitKey(10000)
+                cv2.waitKey(1000000)
             return detected_circles
         return None
 

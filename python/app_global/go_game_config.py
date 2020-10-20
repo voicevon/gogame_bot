@@ -4,6 +4,9 @@ import cv2
 
 
 class app_config:
+    class mainloop:
+        class at_demo_mover:
+            do_vision_check = True
 
     class game_rule:
         class board_size:
@@ -62,7 +65,7 @@ class app_config:
             show_scan_image = True 
             
             class inspecting:
-                cell_name = 'A18'
+                cell_name = 'A19'
                 counter = 100
         class mark_scanner:
             stable_depth = 5
@@ -86,7 +89,7 @@ class CvDebugger():
 
 
 if __name__ == "__main__":
-    global_config = app_config
-    s1 = global_config.robot_arm.name
-    
-    print(s1)
+    # global_config = app_config
+    # s1 = global_config.robot_arm.name
+    app_config.robot_eye.layout_scanner.inspecting.cell_name = 'A1'
+    print(app_config.robot_eye.layout_scanner.inspecting.cell_name)
