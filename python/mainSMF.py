@@ -14,15 +14,15 @@ import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from robot_eye.single_eye import SingleEye
 
-from go_game_board.chessboard import ChessboardLayout, DiedAreaScanner
-from go_game_board.chessboard_cell import ChessboardCell
+from gogame_board.chessboard import ChessboardLayout, DiedAreaScanner
+from gogame_board.chessboard_cell import ChessboardCell
 
 from robot_arm.human_level_robot import HumanLevel_RobotArm
 
 from app_global.color_print import CONST
-from app_global.go_game_config import app_config
+from app_global.gogame_config import app_config
 
-from go_game_ai_client import GoGameAiClient
+from gogame_ai_client import GoGameAiClient
 import paho.mqtt.client as mqtt
 import time
 import logging
@@ -66,7 +66,7 @@ class GoManager():
         print(self.__FC_GREEN + '[Info]: MQTT has connected to: %s' %broker)
 
         self.__mqtt.loop_start()
-        # self.__mqtt.subscribe("house/bulbs/bulb1")
+        self.__mqtt.subscribe("house/bulbs/bulb1")
         self.__mqtt.publish(topic="fishtank/switch/r4/command", payload="OFF", retain=True)
         self.__mqtt.on_message = self.__mqtt_on_message
         # self.__mqtt.loop_stop()
@@ -76,7 +76,8 @@ class GoManager():
         print("message topic=",message.topic)
         print("message qos=",message.qos)
         print("message retain flag=",message.retain)
-
+        if message.topic == 'gogame/eyr/cell/scanner/inspecting/cell_name':
+            print(message.payload)
     def __remove_one_cell_to_trash(self, color):
         '''
         return: how many chesses have benn removed
@@ -121,7 +122,7 @@ class GoManager():
 
         if command == 4:
             self.__ai_go.start_new_game()
-            self.__mqtt.publish('go_game/smf/status', 'computer_playing', retain=True)
+            self.__mqtt.publish('gogame/smf/status', 'computer_playing', retain=True)
             self.__goto = self.at_state_computer_play
         else:
             print(self.__FC_YELLOW + '[Warning]: GoManger.at_begining()  scanned command=%d' %command)
@@ -145,7 +146,7 @@ class GoManager():
 
         elif command == 4:
             self.__goto = self.at_state_begin
-            self.__mqtt.publish('go_game/smf/status','begining',retain=True)
+            self.__mqtt.publish('gogame/smf/status','begining',retain=True)
         else:
             print(self.__FC_YELLOW + '[Warning]: GoManger.at_begining()  scanned command=%d' %command)
 
@@ -226,7 +227,7 @@ class GoManager():
         if same:
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Now please place your chess onto the board. ')
             self.__goto = self.at_state_user_play
-            self.__mqtt.publish('go_game/smf/status','user_playing',retain=True)
+            self.__mqtt.publish('gogame/smf/status','user_playing',retain=True)
             self.__mqtt.publish(topic="fishtank/switch/r4/command",payload="ON",retain=True)
         else:
             # more than one cells are different,  or the only one different cell is black color. 
@@ -245,7 +246,7 @@ class GoManager():
             if key == 'over':
                 self.__ai_go.layout.clear()
                 self.__ai_go.stop_game()
-                self.__mqtt.publish('go_game/smf/status','game_over', retain=True)
+                self.__mqtt.publish('gogame/smf/status','game_over', retain=True)
                 self.__goto = self.at_state_game_over
                 return
 
@@ -264,7 +265,7 @@ class GoManager():
                     # send command to PhonixGo
                     self.__ai_go.feed_user_move(cell_name)
                     self.__ai_go.layout.print_out()
-                    self.__mqtt.publish('go_game/smf/status', 'computer_playing', retain=True)
+                    self.__mqtt.publish('gogame/smf/status', 'computer_playing', retain=True)
                     self.__mqtt.publish(topic="fishtank/switch/r4/command", payload="OFF", retain=True)
                     self.__goto = self.at_state_scan_died_black
                     return

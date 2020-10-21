@@ -8,8 +8,8 @@ import time  # only for sleep
 
 import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
-from go_game_board.chessboard import ChessboardLayout, DiedAreaScanner
-from app_global.go_game_config import app_config, CvDebugger
+from gogame_board.chessboard import ChessboardLayout, DiedAreaScanner
+from app_global.gogame_config import app_config, CvDebugger
 from app_global.color_print import CONST
 
 

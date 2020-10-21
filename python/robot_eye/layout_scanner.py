@@ -8,9 +8,9 @@ import numpy
 
 import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
-from go_game_board.chessboard import ChessboardLayout, ChessboardCell
+from gogame_board.chessboard import ChessboardLayout, ChessboardCell
 from app_global.color_print import CONST
-from app_global.go_game_config import app_config
+from app_global.gogame_config import app_config
 
 class LayoutScanner():
 
@@ -34,7 +34,6 @@ class LayoutScanner():
 
         self.__inspect_cell =  ChessboardCell()
         self.__inspect_cell.from_name(app_config.robot_eye.layout_scanner.inspecting.cell_name)
-        print(self.__inspect_cell.to_diction())
 
         self.__FC_GREEN = CONST.print_color.fore.green
         self.__FC_YELLOW = CONST.print_color.fore.yellow
