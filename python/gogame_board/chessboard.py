@@ -83,7 +83,7 @@ class ChessboardLayout():
     def set_cell_value_from_name(self, cell_name, new_value):
         cell = ChessboardCell()
         cell.from_name(cell_name)
-        self.set_cell_value(self, cell.col_id, cell.row_id, new_value)
+        self.set_cell_value(cell.col_id, cell.row_id, new_value)
 
     def set_cell_value(self, col_id, row_id, new_value):
         self._layout_array[col_id][row_id] = new_value
