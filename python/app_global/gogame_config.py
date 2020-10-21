@@ -43,7 +43,8 @@ class app_config:
 
     class robot_arm:
         name = 'GO_SCARA'
-
+        enable_moveit = False
+        
     class robot_eye:
         camera_index = 0
         show_origin = True

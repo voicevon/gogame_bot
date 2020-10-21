@@ -17,7 +17,7 @@ from robot_kinematic import Pose,Pose_FK
 import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from app_global.color_print import CONST   # do not use  from app_global.color_print,  don't know why! 
-from app_global.go_game_config import app_config
+from app_global.gogame_config import app_config
 
 
 class HumanLevel_RobotArm:
@@ -56,13 +56,15 @@ class HumanLevel_RobotArm:
         else:
             logging.error(self.__FC_RED + ' Wrong arg of hard_robot_type %s' %hard_robot_type + self.__FC_RESET)
 
-        self.__soft_robot = Soft_robot()
+        if app_config.robot_arm.enable_moveit:
+            self.__soft_robot = Soft_robot()
+            rospy.init_node(self.__robot_type_name)
 
         self.__hard_robot_is_following = False  # to avoid repeated subscription
         # The host will not subsribe message from MoveIt, in this solution
         self.__pose_helper = Robot_pose_helper()
         self.current_pose = Pose()
-        rospy.init_node(self.__robot_type_name)
+
         self.__at_picked_up = False
         self.__log_level = 0
 
@@ -73,7 +75,8 @@ class HumanLevel_RobotArm:
         self.__hard_robot.home_all_joints()
 
     def bridge_soft_robot_connect_to_moveit(self):
-        self.__soft_robot.connect_to_moveit()
+        if app_config.robot_arm.enable_moveit:
+            self.__soft_robot.connect_to_moveit()
 
     def this_pose_is_in_diction(self,pose_name):
         if pose_name in self.__pose_helper.pose_diction:
@@ -198,7 +201,8 @@ class HumanLevel_RobotArm:
         self.__set_hard_robot_folllowing(False)
         IK_dict = target_pose.IK.to_diction()
         self.__hard_robot.set_joints_angle_in_degree(IK_dict)
-        self.__soft_robot.goto_the_pose_uint_mm(target_pose.FK)
+        if app_config.robot_arm.enable_moveit:
+            self.__soft_robot.goto_the_pose_uint_mm(target_pose.FK)
 
         self.current_pose.name = target_pose.name
         self.current_pose.FK.from_diction(target_pose.FK.to_diction())

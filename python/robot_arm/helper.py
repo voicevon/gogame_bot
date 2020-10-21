@@ -60,7 +60,7 @@ class Robot_pose_helper:
         self.CONFIG_FILENAME = 'poses.json'        
         self.read_json_file_to_pose_diction(self.CONFIG_FILENAME)
 
-        print('zero in world [x,y]', self.zero_in_world_x,self.zero_in_world_y)
+        # print('zero in world [x,y]', self.zero_in_world_x,self.zero_in_world_y)
 
     def from_pose_diction(self, pose_name, copy_from_this_pose_name = None):
         '''

@@ -9,7 +9,7 @@ import rospy
 import sys
 sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from app_global.color_print import CONST
-from app_global.go_game_config import app_config, CvDebugger
+from app_global.gogame_config import app_config, CvDebugger
 
 
 class BoardScanner():

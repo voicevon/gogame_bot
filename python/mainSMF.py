@@ -66,7 +66,7 @@ class GoManager():
         print(self.__FC_GREEN + '[Info]: MQTT has connected to: %s' %broker)
 
         self.__mqtt.loop_start()
-        self.__mqtt.subscribe("house/bulbs/bulb1")
+        self.__mqtt.subscribe("gogame/eye/cell_scanner/inspecting/cell_name")
         self.__mqtt.publish(topic="fishtank/switch/r4/command", payload="OFF", retain=True)
         self.__mqtt.on_message = self.__mqtt_on_message
         # self.__mqtt.loop_stop()
@@ -76,8 +76,10 @@ class GoManager():
         print("message topic=",message.topic)
         print("message qos=",message.qos)
         print("message retain flag=",message.retain)
-        if message.topic == 'gogame/eyr/cell/scanner/inspecting/cell_name':
-            print(message.payload)
+        if message.topic == 'gogame/eye/cell_scanner/inspecting/cell_name':
+            print('MQTT command: Update inspecting cell to:    %s' %message.payload)
+            app_config.robot_eye.layout_scanner.inspecting.cell_name = message.payload
+
     def __remove_one_cell_to_trash(self, color):
         '''
         return: how many chesses have benn removed
