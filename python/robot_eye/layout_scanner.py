@@ -144,6 +144,10 @@ class LayoutScanner():
                 cv2.circle(copy, (x,y),16, (255,0,0), 3)
             cv2.putText(copy, 'diffs= ' + text, (10,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 1)
             cv2.imshow('layout_scanner', copy)
+            is_success, img_encode = cv2.imencode(".jpg", copy)
+            if is_success:
+                img_pub = img_encode.tobytes()
+                app_config.server.mqtt.client.publish(topic='gogame/eye/layout_scanner/chess_board', payload=img_pub)
             cv2.waitKey(1)
 
 

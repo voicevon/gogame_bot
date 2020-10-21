@@ -82,6 +82,10 @@ class CellScanner():
         if is_inspected:
             cv2.imshow('scan black blur', blur)
             cv2.imshow('scab bkacj bin', bin_image)
+            is_success, img_encode = cv2.imencode(".jpg", blur)
+            if is_success:
+                img_pub = img_encode.tobytes()
+                app_config.server.mqtt.client.publish(topic='gogame/eye/inspecting/cell/scan_black/blur', payload=img_pub)
             print ('scan_black_counter = %i' %count)
         return cell_color
 

@@ -37,7 +37,7 @@ class GoManager():
         self.__arm = HumanLevel_RobotArm(app_config.robot_arm.name)
         self.__died_area_scanner = DiedAreaScanner()
         self.__mqtt = mqtt.Client("xuming-2038-2334") #create new instance
-        self.target_demo_layout = ChessboardLayout('Demo_target')
+        self.__target_demo_layout = ChessboardLayout('Demo_target')
 
         self.__BLACK = app_config.game_rule.cell_color.black
         self.__WHITE = app_config.game_rule.cell_color.white
@@ -64,7 +64,7 @@ class GoManager():
         self.__mqtt.username_pw_set(username=uid, password=psw)
         self.__mqtt.connect(broker)
         print(self.__FC_GREEN + '[Info]: MQTT has connected to: %s' %broker)
-
+        app_config.server.mqtt.client = self.__mqtt
         self.__mqtt.loop_start()
         self.__mqtt.subscribe("gogame/eye/cell_scanner/inspecting/cell_name")
         self.__mqtt.publish(topic="fishtank/switch/r4/command", payload="OFF", retain=True)
@@ -330,14 +330,14 @@ class GoManager():
         cell = layout.get_first_cell(self.__BLACK)
         if cell is not None:
             print('First black cell = %s' % cell.name)
-            # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
+            # self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
             id_black = cell.id
-            self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
+            self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLACK)
             cell = layout.get_first_cell(self.__WHITE)
-            self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
             if cell is not None:
+                self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
                 print('First white cell = %s' % cell.name)
-                # self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
+                # self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__WHITE)
                 id_white = cell.id
                 id = id_black
                 if id_white < id_black:
@@ -347,23 +347,23 @@ class GoManager():
                     cell.from_id(i)
                     cell_color = layout.get_cell_color_col_row(cell.col_id, cell.row_id)
                     self.__arm.action_pickup_chess_from_a_cell(cell.name)
-                    self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLANK)
+                    self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, self.__BLANK)
                     cell.from_id(i+2)
                     self.__arm.action_place_chess_to_a_cell(cell.name,auto_park=do_vision_check)
-                    self.target_demo_layout.set_cell_value(cell.col_id, cell.row_id, cell_color)
+                    self.__target_demo_layout.set_cell_value(cell.col_id, cell.row_id, cell_color)
                     if do_vision_check:
                         layout = self.__eye.get_stable_layout(self.__LAYOUT_STABLE_DEPTH)
-                        diffs = layout.compare_with(self.target_demo_layout, do_print_out = True)
+                        diffs = layout.compare_with(self.__target_demo_layout, do_print_out = True)
                         if len(diffs) > 0:
                             cell_name, source_cell_color, target_cell_color = diffs[0]
                             app_config.robot_eye.layout_scanner.inspecting.cell_name = cell_name
                             key = raw_input ('Test failed! Please check')
                 self.__arm.action_pickup_chess_from_a_cell('B19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=False)
-                self.target_demo_layout.set_cell_value_from_name('B19',self.__BLANK)
+                self.__target_demo_layout.set_cell_value_from_name('B19',self.__BLANK)
                 self.__arm.action_pickup_chess_from_a_cell('A19')
                 self.__arm.action_place_chess_to_trash_bin(park_to_view_point=True)
-                self.target_demo_layout.set_cell_value_from_name('A19',self.__BLANK)
+                self.__target_demo_layout.set_cell_value_from_name('A19',self.__BLANK)
                 
         self.__goto = self.at_state_game_over
 
