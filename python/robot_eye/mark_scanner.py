@@ -69,16 +69,20 @@ class MarkScanner():
         if len(circles) == 1:
             # Yes, got one circle!
             x,y,r = circles[0][0]
-            mark_index = int(1.0* ( y - self.__min_mark_circle_center_y) / self.__mark_space + 0.5)
-            # Append to history
-            self.__append_to_history(mark_index)
+            b,g,r = cropped_img[y,x]
+            if b + g + r < 100:
+                # the circle is a black circle, not a white circle
+                mark_index = int(1.0* ( y - self.__min_mark_circle_center_y) / self.__mark_space + 0.5)
+                # Append to history
+                self.__append_to_history(mark_index)
+
         return self.__history[-1], self.__stable_depth
     
     def __detect_circles(self, cropped_img, show_processing_image=True):
         # detect circles
         gray = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray,5)
-        cv2.imshow('gray',gray)
+        # cv2.imshow('gray',gray)
         cv2.imshow('blur',blur)
         circles = cv2.HoughCircles(gray, method=cv2.HOUGH_GRADIENT, dp=1, minDist= 4, 
                                     minRadius=10, maxRadius=20, param1=50, param2=30)
@@ -105,4 +109,4 @@ class MarkScanner():
 
 
 if __name__ == "__main__":
-    test = MarkScanner(max_history_length=8)
+    test = MarkScanner()
