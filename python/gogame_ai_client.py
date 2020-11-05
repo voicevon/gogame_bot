@@ -95,6 +95,7 @@ class GoGameAiClient(object):
 
     def stop_game(self):
         self.__disconnct()
+        print('GogameAIClient: game is stopped. and socked is disconected!')
 
     def get_ai_move(self):
         # AI computing
@@ -118,13 +119,11 @@ class GoGameAiClient(object):
 if __name__ == "__main__":
 
     runner = GoGameAiClient()
-    conn = runner.start_new_game()
-    print(conn)
-    runner.list_commands()
     runner.start_new_game()
-    runner.feed_user_move('Q4')
-    cell_name = runner.get_ai_move()
-    print(cell_name)
+    runner.list_commands()
+    # runner.feed_user_move('Q4')
+    # cell_name = runner.get_ai_move()
+    # print(cell_name)
     runner.stop_game()
 
 
@@ -132,6 +131,11 @@ if __name__ == "__main__":
     #     # runner.get_ai_move()
     #     runner.get_board()
 
-    runner.__disconnct()
 
- 
+#  Config game rule
+#       https://github.com/Tencent/PhoenixGo#configure-guide
+#
+#  A7. How make PhoenixGo think with longer/shorter time?
+#       https://github.com/Tencent/PhoenixGo/blob/master/docs/FAQ.md#a7-how-make-phoenixgo-think-with-longershorter-time
+#             File location: ~/PhoenixGo/etc/mcts_dist.conf
+

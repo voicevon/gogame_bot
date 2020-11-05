@@ -367,6 +367,9 @@ class GoManager():
                 
         self.__goto = self.at_state_game_over
 
+    def at_ending_demo(self):
+        self.__goto = self.at_ending_demo
+
     def test_die_area_detector(self):
         layout = self.__eye.get_stable_layout(self.__MARK_STABLE_DEPTH)
         layout.print_out()
@@ -387,7 +390,7 @@ if __name__ == "__main__":
     #   ^                                           |
     #   ^-----------> demo_remove_black ----------->|
     #   ^                                           |
-    #   ^     |<------------------------------------|
+    #   ^     |<-------- ending demo <--------------|
     #   ^     |
     #  game_over ---> begin ---> computer_playing ---> scan_died_white ---> draw_white ---> compare_black ---> user_playing
     #   ^                           ^                                                                             |
