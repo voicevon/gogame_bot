@@ -40,7 +40,8 @@ class ChessboardCell():
     
     def from_name(self,name):
         col_id = 18 - self.__col_name_list.find(name[:1])
-        row_id = int(name[1:]) -1
+        row_id = int(name[1:]) -1    # exeption here:
+        print('For very rare bug..... cell name = %s' %name)
         self.from_col_row_id(col_id,row_id)
         return self
     

@@ -137,5 +137,6 @@ if __name__ == "__main__":
 #
 #  A7. How make PhoenixGo think with longer/shorter time?
 #       https://github.com/Tencent/PhoenixGo/blob/master/docs/FAQ.md#a7-how-make-phoenixgo-think-with-longershorter-time
-#             File location: ~/PhoenixGo/etc/mcts_dist.conf
+#             File location: ~/PhoenixGo/etc/mcts_dist.conf  Not this one
+#             File location: ~/PhoenixGo/etc/mcts_1gpu.conf   Can be seen from command line, When launch PhoenixGo
 
