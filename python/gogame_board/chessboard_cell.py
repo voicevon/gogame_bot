@@ -39,9 +39,13 @@ class ChessboardCell():
         return self
     
     def from_name(self,name):
+        # print('For very rare bug..... cell name = %s' %name)
+        if name=='resign':
+            xx= input ('computer_playing, cell_name="resign", press enter to continue')
+            # name = 'T0'
+            return None
         col_id = 18 - self.__col_name_list.find(name[:1])
         row_id = int(name[1:]) -1    # exeption here:
-        print('For very rare bug..... cell name = %s' %name)
         self.from_col_row_id(col_id,row_id)
         return self
     

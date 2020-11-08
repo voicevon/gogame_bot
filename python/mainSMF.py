@@ -155,11 +155,13 @@ class GoManager():
     def at_state_computer_play(self):
         # get command from PhonixGo
         cell_name = self.__ai_go.get_ai_move()
-        logging.info(self.__FC_PINK + 'AI step: place black at: %s' %cell_name + self.__FC_RESET)
-        # robot arm play a chess, The instruction is from AI.
-        self.__arm.action_pickup_chess_from_warehouse()
-        self.__arm.action_place_chess_to_a_cell(cell_name=cell_name)
-        self.__ai_go.layout.play(cell_name, self.__BLACK)
+        if cell_name is not None:
+            # some time the ai_player will return a 'resign' as a cell name.
+            logging.info(self.__FC_PINK + 'AI step: place black at: %s' %cell_name + self.__FC_RESET)
+            # robot arm play a chess, The instruction is from AI.
+            self.__arm.action_pickup_chess_from_warehouse()
+            self.__arm.action_place_chess_to_a_cell(cell_name=cell_name)
+            self.__ai_go.layout.play(cell_name, self.__BLACK)
 
         self.__goto = self.at_state_scan_died_white
 

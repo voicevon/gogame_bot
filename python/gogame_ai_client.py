@@ -27,7 +27,7 @@ class GoGameAiClient(object):
     def __init__(self):
         self.layout = ChessboardLayout('AI layout')
         self.__is_connected = False
-        self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)      # 定义socket类型，网络通信，TCP
+        self.__socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)      # 定义socket类型，网络通信，TCP
 
         self.__BLANK = app_config.game_rule.cell_color.blank
         self.__BLACK = app_config.game_rule.cell_color.black
@@ -35,38 +35,21 @@ class GoGameAiClient(object):
 
         self.__FC_BLACK = app_config.game_rule.cell_color.black
 
-    def __connect_to_server(self):
-        if self.__is_connected:
-            logging.warn('GoGameAiCient: connect() is invoked when connected')
-            return
 
-        server = app_config.server.AI.ip
-        port = app_config.server.AI.port
-        # self.__ai_go.connect(server, port)
-         # try:
-        print('>>>>>>>>>>>>>>>>>>>>>>>>>> server: %s Port: %d'%(server, port))
-        self.__socket.connect((server, port))       # 要连接的IP与端口
-        print('>>>>>>>>>>>>>>>>>>>>>>>>>> PhoenixGo is Connected >>>>>>>>>>>>>')
-            # return True
-        # except ConnectionRefusedError:
-        #     return False
-        self.__is_connected = True
 
-    def __disconnct(self):
-        self.__socket.close()   # 关闭连接`
-        self.__is_connected = False
+
 
     def __to_ai(self, command):
         command += '\n'
-        self.__socket.sendall(command.encode())      # 把命令发送给对端
-        data = self.__socket.recv(1024)     # 把接收的数据定义为变量'
+        self.__socket_client.sendall(command.encode())      # 把命令发送给对端
+        data = self.__socket_client.recv(1024)     # 把接收的数据定义为变量'
         
         receiving = True
         while receiving:
             if(data.count(b'\n\n') > 0):
                 receiving = False
             else:
-                data = data + self.__socket.recv(1024)
+                data = data + self.__socket_client.recv(1024)
         text = data.decode().replace("\n\n", "")
         return text
     
@@ -84,7 +67,26 @@ class GoGameAiClient(object):
         print ret
 
     def start_new_game(self):
-        self.__connect_to_server()
+        #   connect_to_server
+        if self.__is_connected:
+            logging.warn('GoGameAiCient: connect() is invoked when connected')
+            return
+
+        server = app_config.server.AI.ip
+        port = app_config.server.AI.port
+        # try:
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>> server: %s Port: %d'%(server, port))
+        self.__socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)      # 定义socket类型，网络通信，TCP
+        self.__socket_client.connect((server, port))       # 要连接的IP与端口
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>> PhoenixGo is Connected >>>>>>>>>>>>>')
+            # return True
+        # except ConnectionRefusedError:
+        #     return False
+        # except:
+        #     pass
+        self.__is_connected = True
+
+        # Connect to AI
         ret = self.__to_ai("clear_board")
         if(ret.count("=") > 0):
             print("AI棋盘: 清空成功\r\n")
@@ -94,8 +96,12 @@ class GoGameAiClient(object):
             logging.error('Start ai player error! ')
 
     def stop_game(self):
-        self.__disconnct()
-        print('GogameAIClient: game is stopped. and socked is disconected!')
+        xx = self.__to_ai('quit')
+        print('=======================%s'%xx)
+        self.__socket_client.close()   # 关闭连接`
+        # self.__socket_client.shutdown()
+        self.__is_connected = False
+        print('GO AI_client is closed')
 
     def get_ai_move(self):
         # AI computing
@@ -120,10 +126,13 @@ if __name__ == "__main__":
 
     runner = GoGameAiClient()
     runner.start_new_game()
-    runner.list_commands()
+    # runner.list_commands()
     # runner.feed_user_move('Q4')
     # cell_name = runner.get_ai_move()
     # print(cell_name)
+    # runner.start_new_game()
+    runner.stop_game()
+    runner.start_new_game()
     runner.stop_game()
 
 
@@ -140,3 +149,5 @@ if __name__ == "__main__":
 #             File location: ~/PhoenixGo/etc/mcts_dist.conf  Not this one
 #             File location: ~/PhoenixGo/etc/mcts_1gpu.conf   Can be seen from command line, When launch PhoenixGo
 
+# https://www.gnu.org/software/gnugo/gnugo_19.html
+# https://en.wikipedia.org/wiki/Handicap_(go)
