@@ -121,6 +121,9 @@ class GoGameAiClient(object):
         else:
             logging.warn('feed_user_move() ret=%s' %ret)
 
+    def get_final_score(self):
+        xx = self.__to_ai('final_score')
+        print('final_score', xx)
 
 if __name__ == "__main__":
 

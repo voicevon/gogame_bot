@@ -153,6 +153,7 @@ class GoManager():
             print(self.__FC_YELLOW + '[Warning]: GoManger.at_begining()  scanned command=%d' %command)
 
     def at_state_computer_play(self):
+        self.__ai_go.get_final_score()
         # get command from PhonixGo
         cell_name = self.__ai_go.get_ai_move()
         if cell_name is not None:
