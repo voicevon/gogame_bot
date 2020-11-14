@@ -41,10 +41,10 @@ class ChessboardCell():
     def from_name(self,name):
         # print('For very rare bug..... cell name = %s' %name)
         if name=='resign':
-            xx= input ('computer_playing, cell_name="resign", press enter to continue')
+            xx= raw_input ('computer_playing, cell_name="resign", press enter to continue')
             return None
         if name=='pass':
-            xx= input ('computer_playing, cell_name="pass", press enter to continue')
+            xx= raw_input ('computer_playing, cell_name="pass", press enter to continue')
             return None
         col_id = 18 - self.__col_name_list.find(name[:1])
         row_id = int(name[1:]) -1    # exeption here:
