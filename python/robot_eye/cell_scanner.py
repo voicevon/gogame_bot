@@ -54,7 +54,7 @@ class CellScanner():
         average_brightness = numpy.mean(blur)
         cell_color = self.__BLACK
         if is_inspected:
-            print('average_brightness = %d' %average_brightness)
+            # print('average_brightness = %d' %average_brightness)
             cv2.imshow('cell_image',cell_image)
         if average_brightness > 150:
             cell_color = self.__WHITE
@@ -109,7 +109,7 @@ class CellScanner():
                 cv2.circle(mask_circle, (x,y), radius=r, color=1, thickness=-1)
                 masked_image = cv2.bitwise_and (cell_image, cell_image, mask=mask_circle)
                 if is_inspected:
-                    cv2.imshow('inspecting cell', masked_image)
+                    cv2.imshow('inspecting cell detected circle already', masked_image)
                     cv2.waitKey(1)
                 # What color in this circle? black or white
                 average_brightness = numpy.mean(masked_image)
@@ -124,6 +124,9 @@ class CellScanner():
                     # else:
                     #     print('Negtive')
                     #     cv2.waitKey(100000)
+                else:
+                    print(self.__FC_RESET + '>>>>average_brightness= %d' %average_brightness)
+
         else:
             if is_inspected: 
                 print('detected cell_image,  circles=%d' %len(detected_circles))
