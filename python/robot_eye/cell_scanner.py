@@ -31,41 +31,19 @@ class CellScanner():
         return: 
             detected cell_color
         '''
-        # detected_circles = self.__detect_circles(cell_image,show_processing_image=is_inspected)
-        # cell_color = self.__BLANK
 
-        # if detected_circles is None:
-        #     if is_inspected:
-        #         print('Inspected cell, no circles found!')
-        #         cv2.imwrite(str(go_game_inspecting_cell.counter) +'.png',cell_image)
-                # go_game_inspecting_cell.counter += 1
-        # elif len(detected_circles) == 1:
-            # detected one circle. 
-            # height, width, depth = cell_image.shape
-            # mask_circle = numpy.zeros((height, width), numpy.uint8)
-            
-            # for (x,y,r) in detected_circles[0]:
-            #     cv2.circle(mask_circle, (x,y), radius=r, color=1, thickness=-1)
-            #     masked_image = cv2.bitwise_and (cell_image, cell_image, mask=mask_circle)
-            #     cv2.imshow('fffffffff',masked_image)
-                # What color in this circle? black or white
         gray = cv2.cvtColor(cell_image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray,5)
         average_brightness = numpy.mean(blur)
         cell_color = self.__BLACK
         if is_inspected:
-            # print('average_brightness = %d' %average_brightness)
+            print('==== average_brightness = %d' %average_brightness)
             cv2.imshow('cell_image',cell_image)
         if average_brightness > 150:
             cell_color = self.__WHITE
         elif average_brightness > 80:
             cell_color = self.__BLANK
-        # print(self.__PT_RESET + 'average_brightness= %d' %average_brightness)
-        # if average_brightness > 30:
-        #     cell_color = self.__WHITE
-        # else:
-        #     # if is_inspected: 
-        #     print('detected cell_image,  circles=%d' %len(detected_circles))
+
         return cell_color
 
     def scan_black(self, cell_image, is_inspected):
@@ -89,12 +67,33 @@ class CellScanner():
             print ('scan_black_counter = %i' %count)
         return cell_color
 
-        
+    def roiColor(self, image, center_x, center_y,radius):
+        """
+        Finds the averaged color within the ROI within the square. The ROI is a circle with radius r from
+        the centre of the square.
+        """
+        # Initialise mask
+        maskImage = numpy.zeros((image.shape[0], image.shape[1]), numpy.uint8)
+        # Draw the ROI circle on the mask
+        cv2.circle(maskImage, (center_x, center_y), radius, (255, 255, 255), -1)
+        # Find the average color
+        average_raw = cv2.mean(image, mask=maskImage)[::-1]
+        # Need int format so reassign variable
+        average = int(average_raw[1])+ int(average_raw[2])+ int(average_raw[3])
+        average /= 3
+
+        ## DEBUG
+        # print(average)
+
+        return average 
+
     def scan_white(self, cell_image, is_inspected):
         '''
         return: 
             detected cell_color, only for White. because connected black cells have no circle
         '''
+        xxx = 0
+        average_brightness =0
         detected_circles = self.__detect_circles(cell_image,show_processing_image=is_inspected)
         cell_color = self.__BLANK
         if detected_circles is None:
@@ -102,19 +101,18 @@ class CellScanner():
                 print('Inspected cell, no circles found!')
         elif len(detected_circles) == 1:
             # detected one circle. 
+            
             height, width, depth = cell_image.shape
             mask_circle = numpy.zeros((height, width), numpy.uint8)
             
             for (x,y,r) in detected_circles[0]:
+                average_brightness = self.roiColor(cell_image,x,y,r)
                 cv2.circle(mask_circle, (x,y), radius=r, color=1, thickness=-1)
                 masked_image = cv2.bitwise_and (cell_image, cell_image, mask=mask_circle)
-                if is_inspected:
-                    cv2.imshow('inspecting cell detected circle already', masked_image)
-                    cv2.waitKey(1)
                 # What color in this circle? black or white
-                average_brightness = numpy.mean(masked_image)
+                # average_brightness = numpy.mean(masked_image)
                 # print(self.__FC_RESET + 'average_brightness= %d' %average_brightness)
-                if average_brightness > 30:
+                if average_brightness > 80:
                     real_raduis = pow((x - width/2),2)  + pow((y-height/2),2) 
                     # print('inpseting x,y,real_raduis  ', x, y ,real_raduis) 
                     if real_raduis < 130:  # 51% of a circle can also be detected!
@@ -125,12 +123,17 @@ class CellScanner():
                     #     print('Negtive')
                     #     cv2.waitKey(100000)
                 else:
-                    print(self.__FC_RESET + '>>>>average_brightness= %d' %average_brightness)
-
-        else:
-            if is_inspected: 
+                    pass
+                    # print(self.__FC_RESET + '>>>>average_brightness= %d' %average_brightness)
+   
+        if is_inspected: 
+            print(self.__FC_YELLOW + ' scan_white:  average_brightness= %d' %average_brightness)
+            if detected_circles is None:
+                print('++++++++++++++++++  No circle is found!')
+            else:
                 print('detected cell_image,  circles=%d' %len(detected_circles))
-                cv2.waitKey(10000)
+                cv2.imshow('scan_white:  masked_image', masked_image)
+            # cv2.waitKey(10000)
         return cell_color
    
     def __detect_circles(self, cropped_img, show_processing_image=True):
