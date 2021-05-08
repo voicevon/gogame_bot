@@ -4,8 +4,12 @@ import cv2
 
 
 class app_config:
-    #platform = 'ubuntu_gui'
-    host_os = 'pi_zero'
+    #platform = 'UBUNTU_GUI'
+    host_os = 'PI_ZERO'
+
+    #firmware = 'REPRAP'
+    firmware = 'KLIPPER'
+    
     class mainloop:
         class at_demo_mover:
             do_vision_check = True
@@ -43,8 +47,7 @@ class app_config:
             username = 'von'
             password = 'von1970'
             client = None
-    #firmware = 'REPRAP'
-    firmware = 'KLIPPER'
+
     class robot_arm:
         type = 'GO_SCARA'
         #type = 'FAZE4'

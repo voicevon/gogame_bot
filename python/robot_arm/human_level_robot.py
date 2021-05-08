@@ -13,8 +13,10 @@ from app_global.gogame_config import app_config
 
 from robot_arm.helper import Robot_pose_helper
 from robot_arm.robot_kinematic import Pose,Pose_FK
+
 if app_config.robot_arm.type == 'FAZE4':
     from robot_arm.hard_robot_faze4 import Hard_robot_Faze4
+    
 if app_config.robot_arm.type =='GO_SCARA':
     from robot_arm.hard_robot_go_scara import Hard_robot_GoScara
 

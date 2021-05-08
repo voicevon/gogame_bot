@@ -1,4 +1,5 @@
 
+from python.app_global.gogame_config import app_config
 import sys
 sys.path.append("../")
 from robot_arm.hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
@@ -87,15 +88,20 @@ class Hard_robot_Faze4(Hard_robot):
         Must invoke Init_Marlin before sending any gCode.
         Otherwise, some gcodes will not be executed.
         '''
-        if self.mode == HARD_ROBOT_ONLINE_LEVEL.OFF_LINE:
-            print('[Warning]: Robot is offline ')
-            return
+        if app_config.firmware == "REPRAP":
+            if self.mode == HARD_ROBOT_ONLINE_LEVEL.OFF_LINE:
+                print('[Warning]: Robot is offline ')
+                return
 
-        self._my_serial.SendCommandCode('G83')
-        self._my_serial.SendCommandCode('G28 X')
-        self._my_serial.SendCommandCode('G28 Z')
-        self._my_serial.SendCommandCode('G28 Y')
-        self._my_serial.SendCommandCode('G1 X0 Y0 Z0 E0') 
+            self._my_serial.SendCommandCode('G83')
+            self._my_serial.SendCommandCode('G28 X')
+            self._my_serial.SendCommandCode('G28 Z')
+            self._my_serial.SendCommandCode('G28 Y')
+            self._my_serial.SendCommandCode('G1 X0 Y0 Z0 E0') 
+
+        elif app_config.firmware == "KLIPPER":
+            pass
+        
         self.mode = HARD_ROBOT_ONLINE_LEVEL.HOMED 
 
     def set_joints_angle_in_degree(self, IK_dict):
