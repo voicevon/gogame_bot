@@ -1,9 +1,12 @@
 # sudo chmod 666 /dev/ttyUSB0
 
-
-from hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
-import rospy 
-from sensor_msgs.msg import JointState
+import sys
+sys.path.append("../")
+from robot_arm.hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
+from app_global.gogame_config import app_config
+if app_config.platform == 'ubuntu_gui':
+    import rospy 
+    from sensor_msgs.msg import JointState
 
 class Hard_robot_GoScara(Hard_robot):
 

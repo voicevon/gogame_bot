@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+# sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+# sys.path.append('../gogame_board/')
+sys.path.append('../')
 from app_global.color_print import CONST
 from app_global.gogame_config import app_config
 
 
-from chessboard_cell import ChessboardCell
+from gogame_board.chessboard_cell import ChessboardCell
 import logging
 
 

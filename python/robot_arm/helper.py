@@ -1,8 +1,17 @@
 
-from robot_kinematic import Pose
-import json
+
 # from chessboard_helper import ChessboardCell
 
+
+import json
+
+import sys
+sys.path.append("../")
+from app_global.gogame_config import app_config
+if app_config.platform =="ubuntu_gui":
+    from robot_kinematic import Pose
+    
+    
 class Orientation_helper:
     '''
     This class should be a kind of static class. 
@@ -57,7 +66,7 @@ class Robot_pose_helper:
         # self.pose_IK_only_diction = {'HOME','ZERO','CR1','CR2','CR3','CR5'}
         # self.pose_FK_adjust_command_diction = {'UP','DOWN','LEFT','RIGHT','FRONT','BACK'}
 
-        self.CONFIG_FILENAME = 'poses.json'        
+        self.CONFIG_FILENAME = '../../poses.json'        
         self.read_json_file_to_pose_diction(self.CONFIG_FILENAME)
 
         # print('zero in world [x,y]', self.zero_in_world_x,self.zero_in_world_y)

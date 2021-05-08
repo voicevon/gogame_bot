@@ -3,11 +3,12 @@
 
 import numpy
 import cv2
-import rospy
+# import rospy
 
 
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+# sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+sys.path.append('../')
 from app_global.color_print import CONST
 from app_global.gogame_config import app_config, CvDebugger
 

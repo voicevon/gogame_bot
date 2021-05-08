@@ -1,6 +1,10 @@
-from hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
-import rospy 
-from sensor_msgs.msg import JointState
+
+import sys
+sys.path.append("../")
+from robot_arm.hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
+if app_global.gogame_config.platform =="ubuntu_gui":
+    import rospy 
+    from sensor_msgs.msg import JointState
 
 class Hard_robot_Faze4(Hard_robot):
 

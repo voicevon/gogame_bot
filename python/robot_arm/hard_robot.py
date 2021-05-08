@@ -1,12 +1,16 @@
 
 # sudo chmod 666 /dev/ttyUSB0
 # roslaunch faze4_moveit demo.launch rviz_tutorial:=true
-import rospy 
-from std_msgs.msg import String
-from sensor_msgs.msg import JointState
-
 from abc import abstractmethod
 import serial, time
+
+import sys
+sys.path.append("../")
+from app_global.gogame_config import app_config
+if app_config.platform == "ubuntu_gui":
+    import rospy 
+    from std_msgs.msg import String
+    from sensor_msgs.msg import JointState
 
 
 class _Reprap_serial:
@@ -62,7 +66,7 @@ class HARD_ROBOT_ONLINE_LEVEL(Enum):
     ONLINE_AS_FAZE4 = 3
     HOMED = 4
 
-from robot_kinematic import Pose_IK
+from robot_arm.robot_kinematic import Pose_IK
 
 
 

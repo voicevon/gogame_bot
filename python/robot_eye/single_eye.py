@@ -7,15 +7,16 @@ import time  # only for sleep
 
 
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+#sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+sys.path.append('../')
 from gogame_board.chessboard import ChessboardLayout, DiedAreaScanner
 from app_global.gogame_config import app_config, CvDebugger
 from app_global.color_print import CONST
 
 
-from mark_scanner import MarkScanner
-from board_scanner import BoardScanner
-from layout_scanner import LayoutScanner
+from robot_eye.mark_scanner import MarkScanner
+from robot_eye.board_scanner import BoardScanner
+from robot_eye.layout_scanner import LayoutScanner
 
 class CvWindows():
     def __init__(self):

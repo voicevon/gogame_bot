@@ -4,6 +4,8 @@ import cv2
 
 
 class app_config:
+    #platform = 'ubuntu_gui'
+    platform = 'pi_zero'
     class mainloop:
         class at_demo_mover:
             do_vision_check = True
@@ -43,7 +45,8 @@ class app_config:
             client = None
 
     class robot_arm:
-        name = 'GO_SCARA'
+        type = 'GO_SCARA'
+        #type = 'FAZE4'
         enable_moveit = False
 
     class robot_eye:

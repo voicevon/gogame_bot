@@ -4,23 +4,24 @@
 #  The exlaination is here:
 #  http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/move_group_python_interface/move_group_python_interface_tutorial.html
 import sys
+sys.path.append("../")
 import copy
-import rospy
 import logging
-import geometry_msgs.msg
-from std_msgs.msg import String
-
-import moveit_commander
-import moveit_msgs.msg
-from moveit_commander.conversions import pose_to_list
 
 from math import pi
 import random
 import threading
 import time
 
-from robot_kinematic import Pose
-
+if app_global.gogame_config.platform =="ubuntu_gui":
+    import rospy
+    from robot_kinematic import Pose
+    import moveit_commander
+    import moveit_msgs.msg
+    from moveit_commander.conversions import pose_to_list
+    import geometry_msgs.msg
+    from std_msgs.msg import String
+    
 class Soft_robot:
     '''
     Actrually, a soft_robot is MoveIt client.

@@ -5,20 +5,24 @@
 # sudo chmod 666 /dev/ttyUSB0
 
 import logging
-from soft_robot import Soft_robot
-from helper import Robot_pose_helper
-from hard_robot_faze4 import Hard_robot_Faze4
-from hard_robot_go_scara import Hard_robot_GoScara
-import rospy 
-from std_msgs.msg import String
-from sensor_msgs.msg import JointState
-from robot_kinematic import Pose,Pose_FK
-
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+sys.path.append("../")
+
 from app_global.color_print import CONST   # do not use  from app_global.color_print,  don't know why! 
 from app_global.gogame_config import app_config
 
+from robot_arm.helper import Robot_pose_helper
+if app_config.robot_arm.type == 'FAZE4':
+    from robot_arm.hard_robot_faze4 import Hard_robot_Faze4
+if app_config.robot_arm.type =='GO_SCARA':
+    from robot_arm.hard_robot_go_scara import Hard_robot_GoScara
+
+if app_global.gogame_config.platform == 'ubuntu_gui':
+    import rospy 
+    from std_msgs.msg import String
+    from sensor_msgs.msg import JointState
+    from robot_kinematic import Pose,Pose_FK
+    from robot_arm.soft_robot import Soft_robot
 
 class HumanLevel_RobotArm:
     '''
