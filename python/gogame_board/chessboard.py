@@ -434,5 +434,5 @@ if __name__ == "__main__":
     test2.play('T19',app_config.game_rule.cell_color.black)
     test2.play('K10',app_config.game_rule.cell_color.white)
     x = test2.compare_with(test1,do_print_out=True)
-    print x
+    print (x)  
     
