@@ -4,7 +4,7 @@ import sys
 sys.path.append("../")
 from robot_arm.hard_robot import Hard_robot,HARD_ROBOT_ONLINE_LEVEL
 from app_global.gogame_config import app_config
-if app_config.platform == 'ubuntu_gui':
+if app_config.host_os == 'ubuntu_gui':
     import rospy 
     from sensor_msgs.msg import JointState
 

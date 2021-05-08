@@ -11,7 +11,7 @@
 # sudo chmod 666 /dev/ttyUSB0
 
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
+sys.path.append('../')
 from robot_eye.single_eye import SingleEye
 
 from gogame_board.chessboard import ChessboardLayout, DiedAreaScanner
@@ -34,7 +34,7 @@ class GoManager():
         self.__goto = self.at_state_game_over
         self.__ai_go = GoGameAiClient()
         self.__eye = SingleEye()
-        self.__arm = HumanLevel_RobotArm(app_config.robot_arm.name)
+        self.__arm = HumanLevel_RobotArm(app_config.robot_arm.type)
         self.__died_area_scanner = DiedAreaScanner()
         self.__mqtt = mqtt.Client("xuming-2038-2334") #create new instance
         self.__target_demo_layout = ChessboardLayout('Demo_target')
@@ -54,7 +54,9 @@ class GoManager():
 
     def start_arm(self):
         self.__arm.bridge_soft_robot_connect_to_moveit()
-        self.__arm.bridge_hard_robot_connect_to_marlin()
+        if app_config.firmware == 'REPRAP':
+            self.__arm.bridge_hard_robot_connect_to_marlin()
+            
         self.__arm.bridge_hard_robot_home_all_joints()
 
     def start_mqtt(self):

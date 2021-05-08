@@ -64,7 +64,7 @@ class GoGameAiClient(object):
         See list_commands()
         '''
         ret = self.__to_ai('showboard')
-        print ret
+        print (ret)
 
     def start_new_game(self):
         #   connect_to_server

@@ -5,7 +5,7 @@ import cv2
 
 class app_config:
     #platform = 'ubuntu_gui'
-    platform = 'pi_zero'
+    host_os = 'pi_zero'
     class mainloop:
         class at_demo_mover:
             do_vision_check = True
@@ -43,7 +43,8 @@ class app_config:
             username = 'von'
             password = 'von1970'
             client = None
-
+    #firmware = 'REPRAP'
+    firmware = 'KLIPPER'
     class robot_arm:
         type = 'GO_SCARA'
         #type = 'FAZE4'

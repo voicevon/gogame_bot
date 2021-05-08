@@ -1,6 +1,5 @@
 
 import sys
-sys.path.append('/home/xm/gitrepo/gogame_bot/python')
 from app_global.color_print import CONST
 
     # '(\ (\'
@@ -24,6 +23,7 @@ welcome.append('  *                System is loading...                 *  ')
 welcome.append('  *                                                     *  ')
 welcome.append('  * * * * * * * * * * * * * * * * * * * * * * * * * * * *  ')
 welcome.append('                                                           ')
+
 for w in welcome:
     print('                      ' + CONST.print_color.control.bold + CONST.print_color.fore.yellow + CONST.print_color.background.blue + w + CONST.print_color.control.reset)
 print(CONST.print_color.control.reset)
